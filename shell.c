@@ -6,17 +6,19 @@
 
 
 void display_prompt(void);
-void run_program(char **exec_path, int *status);
-void exec_program(char *exec_path);
+void run_program(char **exec_path, int *status, char **av);
+void exec_program(char *exec_path, char *av);
 
 /**
  * main - main function
+ * @argc: number of arguments passed to main
+ * @argv: array of arguments passed to main
  * Return: always 0
  */
 
 
 
-int main(void)
+int main(int argc, char **argv)
 {
 	char *line = NULL;
 	size_t len = 0;
@@ -30,7 +32,7 @@ int main(void)
 		if (read == -1)
 			break;
 		line[read - 1] = '\0';
-		run_program(&line, &status);
+		run_program(&line, &status, argv);
 	}
 }
 
@@ -50,10 +52,11 @@ void display_prompt(void)
   * run_program - run a program base on the argument
   * @exec_path: path to the executable file
   * @status: type of interger, allow to control parent process running
+  * @av: vector of arguments fill to main
   * Return: Nothing
   */
 
-void run_program(char **exec_path, int *status)
+void run_program(char **exec_path, int *status, char **av)
 {
 	/* create pid */
 	pid_t child_pid;
@@ -66,7 +69,7 @@ void run_program(char **exec_path, int *status)
 	}
 	else if (child_pid == 0)
 	{
-		exec_program(*exec_path);
+		exec_program(*exec_path, *av);
 	}
 	else
 	{
@@ -80,10 +83,11 @@ void run_program(char **exec_path, int *status)
 /**
   * exec_program - execute the given program
   * @path: path to the executable file
+  * @av: copy of vector arguments passed to main file
   */
 
 
-void exec_program(char *path)
+void exec_program(char *path, char *av)
 {
 	char *envp[] = { NULL };
 	char *argv[] = {path, NULL};
@@ -91,7 +95,7 @@ void exec_program(char *path)
 
 	if (i == -1)
 	{
-		perror("execve failed");
+		perror((av + 0));
 		exit(EXIT_FAILURE);
 	}
 	exit(EXIT_SUCCESS);
