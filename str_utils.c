@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "header.h"
 
 /**
  * _strcat - concatenates two strings
@@ -14,13 +14,9 @@ char *_strcat(char *dest, char *src)
 		return (NULL);
 
 	/* get the length of dest */
-	int i = 0;
+	int i = _strlen(dest);
 	int j = 0;
 
-	while (dest[i] != '\0')
-	{
-		i++;
-	}
 	/* add src to the end of dest */
 	while (src[j] != '\0')
 	{
@@ -49,10 +45,9 @@ int _strlen(char *s)
 
 	int i = 0;
 
-	while (*s != '\0')
+	while (s[i] != '\0')
 	{
 		i++;
-		s++;
 	}
 	return (i);
 }
@@ -75,11 +70,7 @@ char *_strcpy(char *dest, char *src)
 
 	int len, i;
 
-	len = 0;
-	while (src[len] != '\0')
-	{
-		len++;
-	}
+	len = _strlen(src);
 
 	for (i = 0; i < len; i++)
 	{
@@ -89,3 +80,54 @@ char *_strcpy(char *dest, char *src)
 	return (dest);
 }
 
+
+/**
+ * _strdup - returns a pointer to a copy of a string
+ *
+ * @s: string to be copied
+ *
+ * Return: pointer to new copy
+ */
+char *_strdup(char *s)
+{
+	char *copy = NULL;
+	size_t len = 0, i;
+
+	if (s == NULL)
+		return (NULL);
+
+	len = _strlen(s) + 1;
+
+	copy = malloc(len * sizeof(char));
+
+	if (copy != NULL)
+	{
+		for (i = 0; i < len; i++)
+			copy[i] = s[i];
+	}
+
+	return (copy);
+}
+
+/**
+ * _strchr - finds first instance of a char
+ *				in a string.
+ *
+ * @str: the string to search in.
+ * @ch: the character to search for.
+ *
+ * Return: If found, return a pointer value,
+ *				If not, return NULL.
+ */
+char *_strchr(char *str, int ch)
+{
+	int i;
+
+	for (i = 0; str[i] != '\0'; i++)
+	{
+		if (ch == str[i])
+			return (&str[i]);
+	}
+
+	return (NULL);
+}
