@@ -103,7 +103,6 @@ int run_sys_cmd(char **argv, int n, char **av)
     struct stat st;
 
     prog_path = parse_path(argv[0]);
-    printf("abs path: %s\n", prog_path);
     if ((_strcmp(prog_path, argv[0]) == 0 && _strncmp(prog_path, "./", 2) != 0 &&
         (prog_path[0] != '/' && _strncmp(prog_path, "../", 3) != 0)) ||
         stat(prog_path, &st) != 0)
