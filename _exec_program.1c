@@ -1,0 +1,192 @@
+#include "header.h"
+
+void split_path(char *path, char **components);
+
+
+/**
+  * run_program - run a program base on the argument
+  * @exec_path: path to the executable file
+  * @status: type of interger, allow to control parent process running
+  * @av: vector of arguments fill to main
+  * Return: Nothing
+  */
+
+void run_program(char **exec_path, int *status, char **av)
+{
+	char *arr[1024];
+	
+	split_path(*exec_path, arr);
+	
+	/* get the exec file name */
+	int size = sizeof(arr) / sizeof(arr[0]);
+	char *exe = arr[size - 1];
+
+	/* find exec file */
+	char *abs_path = _find_exe(exe);
+
+
+	/* create pid */
+	pid_t child_pid;
+	/* fork new process */
+	child_pid = fork();
+	if (child_pid == -1)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	else if (child_pid == 0)
+	{
+		exec_program(abs_path, *av);
+	}
+	else
+	{
+		/* suspence parent process unti all child process finished*/
+		wait(status);
+	}
+}
+
+
+
+/**
+  * exec_program - execute the given program
+  * @path: path to the executable file
+  * @av: copy of vector arguments passed to main file
+  */
+
+
+void exec_program(char *path, char *av)
+{
+	int i;
+	char *envp[] = { NULL }, *delim = " ";
+	char *argv[] = {};
+
+	/* split and save path to argv */
+	_strtok(path, delim, argv);
+	/* execute the program with all provider arguments */
+	i = execve(path, argv, envp);
+
+	if (i == -1)
+	{
+		perror((av + 0));
+		exit(EXIT_FAILURE);
+	}
+	exit(EXIT_SUCCESS);
+}
+
+/**
+  * _exec_file - search for this executable file in dirs
+  * @path: PATH
+  * Return: absolute of the file if found or NULL else
+  */
+
+char *_exec_file(char *path)
+{
+	char *delim = "/", *arr, *token;
+	int index = 0;
+	/* set memory for the copy value */
+	char *temp = malloc(sizeof(char) * _strlen(path));
+	
+	if (!temp)
+		return (NULL);
+
+	_strcpy(temp, path);
+	// Tokenize the path using '/' as the delimiter
+	token = strtok(temp, "/");
+	while (token != NULL)
+	{
+		// Store the component in the array
+		arr[index] = *token;
+		token = strtok(NULL, "/");
+		index++;
+	}
+	// Add a null terminator at the end of the array
+	/*arr[index] = NULL;*/
+
+	/* get the exec file name */
+	int size = sizeof(arr) / sizeof(arr[0]);
+	char exe = arr[size - 1];
+	/* find exec file */
+	char *exec_path = _find_exe(&exe);
+	if (exec_path == NULL)
+	{
+		printf("%s: command not found\n", &exe);
+		fflush(stdout);
+		exit(EXIT_SUCCESS);
+	}
+	return (exec_path);
+}
+
+
+
+/**
+ * _find_exe - search for a file in the PATH environment variable
+ * @filename: the name of the file to search for
+ *
+ * Return: the full path of the file if found, or NULL otherwise
+ */
+char *_find_exe(char *filename) {
+	char *path_env = getenv("PATH");
+	char *path = strtok(path_env, ":");
+	struct stat st;
+
+	while (path != NULL)
+	{
+		char *full_path;
+		/* create absolute path */
+		build_abs_path(path, filename, full_path);
+		/*snprintf(full_path, MAX_SIZE, "%s/%s", path, filename);*/
+		/* look for file in this particular dir */
+		if (stat(full_path, &st) == 0 && S_ISREG(st.st_mode)) 
+		{
+			/*char *result = malloc(MAX_SIZE);*/
+			/*strncpy(result, full_path, MAX_SIZE);*/
+			return (full_path);
+		}
+		path = strtok(NULL, ":");
+	}
+	return NULL;
+}
+
+
+
+
+
+
+
+
+
+
+void split_path( char *path, char **components)
+{
+	char *token;
+	int index = 0;
+
+	// Copy the path string to a temporary buffer
+	char tempPath[strlen(path) + 1];
+	strcpy(tempPath, path);
+
+	// Check if the path is absolute or relative
+	int isAbsolute = (path[0] == '/');
+
+	// Tokenize the path using '/' as the delimiter
+	token = strtok(tempPath, "/");
+	while (token != NULL)
+	{
+		// Store the component in the array
+		components[index++] = token;
+		token = strtok(NULL, "/");
+	}
+	// If the path is relative, insert a '.' component at the beginning
+	if (!isAbsolute)
+	{
+		// Shift the components to the right by one position
+		for (int i = index; i > 0; i--)
+		{
+			components[i] = components[i - 1];
+		}
+		components[0] = ".";
+		index++;
+	}
+	// Add a null terminator at the end of the array
+	components[index] = NULL;
+}
