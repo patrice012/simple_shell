@@ -1,6 +1,6 @@
-#include "shell.h"
+#include "header.h"
 
-void display_prompt();
+void shell_prompt(void);
 
 /**
  * main - main function
@@ -11,19 +11,23 @@ void display_prompt();
 
 int main(int argc, char **argv)
 {
-	char *line = NULL;
+	char *line_buffer = NULL;
 	size_t len = 0;
 	ssize_t read;
-	int status;
+	int status, fd = STDIN_FILENO;
 
 	while (1)
 	{
-		display_prompt();
-		read = getline(&line, &len, stdin);
+		/*  shell work in interactive mode ? print prompt */
+		if (isatty(fd))
+			shell_prompt();
+		/* read user input into line_buffer */
+		read = getline(&line_buffer, &len, stdin);
 		if (read == -1)
 			break;
-		line[read - 1] = '\0';
-		run_program(&line, &status, argv);
+		line_buffer[read - 1] = '\0';
+		/* run cmd */
+		run_cmd(line_buffer);
 	}
 }
 
@@ -33,8 +37,8 @@ int main(int argc, char **argv)
   * Return: Nothing
   */
 
-void display_prompt(void)
+void shell_prompt(void)
 {
-	printf("$ ");
+	print_str("$ ");
 	fflush(stdout);
 }

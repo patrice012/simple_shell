@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "header.h"
 
 /**
   * _strtok - breaks a string into a sequence of zero or more nonempty tokens
@@ -10,11 +10,11 @@
 
 void _strtok(char *str, char *delim, char **save)
 {
-	/* set i==1 because argv[0] should be the path of the program */
+	/* set i==0 because argv[0] should be the path of the program */
 	int i = 0;
 	char *_str = strtok(str, delim);
 
-	while (_str != NULL)
+	while (_str != NULL && i < MAX_ARGUMENTS)
 	{
 		/* add to save array == argv */
 		*(save + i) = _str;
