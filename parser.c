@@ -34,10 +34,11 @@
  * argv[1] = "hello"
  * argv[2] = "world"
  */
-    int parse_cmd(char *cmd, char *argv)
-    {
+
+int parse_cmd(char *cmd, char **argv)
+{
     int argc = 0; /* Number of arguments */
-    char arg; /* Current argument */
+    char *arg; /* Current argument */
     char token; /* Tokenized substring */
 
     arg = strtok(cmd, " \t\n"); /* Get the first argument */
@@ -50,4 +51,54 @@
     }
     argv[argc] = NULL; /* Set the last element of the array to NULL */
     return (argc); /* Return the number of arguments */
+}
+
+/**
+ * parse_path - Parse the PATH environment variable to find the executable path
+ * @cmd: The command name
+ *
+ * Return: The absolute path to the executable if found, otherwise a duplicate
+ * of the command name.
+ */
+
+/* Test output : PATH
+ * Input: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin
+ * Output:
+ *     /usr/local/sbin
+ *     /usr/local/bin
+ *     /usr/sbin
+ *     /usr/bin
+ *     /sbin
+ */
+
+char *parse_path(char *cmd)
+{
+    char *path = _get_env("PATH");
+    char *token;
+
+    if (path == NULL) {
+        return (strdup(cmd));
     }
+
+    token = strtok(path, ":");
+    while (token != NULL) {
+        /* 
+         *using length of token + length of cmd + 2 (1 for / and 1 for '\0')
+         *because the output has this format token + / + cmd + '\0'
+         */
+        char *abs_path = malloc(_strlen(token) + _strlen(cmd) + 2);
+        // sprintf(abs_path, "%s/%s", token, cmd);
+        build_abs_path(token, cmd, abs_path);
+
+        /* if file exist and is an executable file */
+        if (access(abs_path, X_OK) == 0) {
+            free(path);
+            return (abs_path);
+        }
+
+        free(abs_path);
+        token = strtok(NULL, ":");
+    }
+
+    return strdup(cmd);
+}

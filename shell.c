@@ -23,11 +23,13 @@ int main(int argc, char **argv)
 			shell_prompt();
 		/* read user input into line_buffer */
 		read = getline(&line_buffer, &len, stdin);
+		printf("value of read:%ld\n", read);
+		printf("value of line buffer:%s\n", line_buffer);
 		if (read == -1)
 			break;
 		line_buffer[read - 1] = '\0';
 		/* run cmd */
-		run_cmd(line_buffer);
+		run_cmd(line_buffer, argv);
 	}
 }
 

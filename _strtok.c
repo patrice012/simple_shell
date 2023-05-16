@@ -14,7 +14,7 @@ void _strtok(char *str, char *delim, char **save)
 	int i = 0;
 	char *_str = strtok(str, delim);
 
-	while (_str != NULL && i < MAX_ARGUMENTS)
+	while (_str != NULL && i < MAX_ARGS_COUNT)
 	{
 		/* add to save array == argv */
 		*(save + i) = _str;

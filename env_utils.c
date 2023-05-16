@@ -1,7 +1,5 @@
 #include "header.h"
 
-extern char **environ;
-
 /**
  * _getenv - Gets an environmental variable.
  *
@@ -13,7 +11,7 @@ extern char **environ;
 
 char *_get_env(char *arg)
 {
-    if (arg == NULL || !environ)
+    if (arg == NULL || environ == NULL)
         return (NULL);
     /* get arg length */
     int len, index;
@@ -27,14 +25,14 @@ char *_get_env(char *arg)
             /* Extract the value after "arg="*/
             /* 
              *environ is of type char *environ[] so environ[index]
-             *give access to element at postion index in array
+             *give access to element at index postion in array
              *this value is also of type char *str so str[len] give access 
              *to the element that follow the str => environ[index][len]
              */
             if (environ[index][len] == '=')
             {
-                /* return the value after = operator */
-                return (environ[index][len] + 1);
+                /* return pointer to the first byte after = */
+                return (environ[index] + len + 1);
             }
         }
     }

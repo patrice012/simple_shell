@@ -29,6 +29,8 @@
 #define PATH_MAX 4096
 
 
+extern char **environ;
+
 
 /* functions prototypes */
 void display_prompt(void);
@@ -38,14 +40,15 @@ void exec_program(char *abs_path, char **args, char *av);
 void build_abs_path(char *directory, char *filename, char *absolute_path);
 char *_exec_file(char *path);
 int check_command_existence(const char *command, char **executablePath);
-
+int run_built_in_command(char **argv, char *line_buffer);
 
 void shell_prompt(void);
-void run_cmd(char *line_buffer);
-int run_sys_cmd(char **argv, int n);
+void run_cmd(char *line_buffer, char **argv);
+int run_sys_cmd(char **argv, int n, char **av);
 void sig_handler(int sig);
 
 int parse_cmd(char *cmd, char **argv);
+char *parse_path(char *cmd);
 
 
 /* utils function */
@@ -55,7 +58,12 @@ char *_strcpy(char *dest, char *src);
 char *_strdup(char *s);
 char *_strchr(char *str, int ch);
 int _atoi(char *str);
+int _strcmp(char *s1, char *s2);
+int _strncmp(char *s1, char *s2, size_t n);
+char *_get_env(char *arg);
 
+
+/* print */
 void print_str(char *str);
 void print_error(char *str);
 void _print(char *str, int fd);
