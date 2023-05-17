@@ -18,13 +18,11 @@ int main(int argc, char **argv)
 
 	while (1)
 	{
-		printf("value of line_buffer: %s\n", line_buffer);
 		/*  shell work in interactive mode ? print prompt */
 		if (isatty(fd))
 			shell_prompt();
 		/* read user input into line_buffer */
 		read = getline(&line_buffer, &len, stdin);
-		printf("value of read: %ld\n", read);
 
 		if (read == -1)
 			break;
@@ -34,8 +32,8 @@ int main(int argc, char **argv)
 	}
 
 	/* free environ */
-	free_env();
-	free(line_buffer);
+	/*free_env();*/
+	/*free(line_buffer);*/
 	return (0);
 }
 

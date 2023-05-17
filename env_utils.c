@@ -9,57 +9,35 @@
  *         Otherwise, value of environmental variable.
  */
 
-// char *_get_env(char *arg)
-// {
-//     /* get arg length */
-//     int len, index;
-
-//     if (arg == NULL || environ == NULL)
-//         return (NULL);
-//     len = _strlen(arg);
-//     /* compare each element in array to arg */
-//     for(index = 0; environ[index]; index++)
-//     {
-//         if (_strncmp(arg, environ[index], len) == 0)
-//         {
-//             /* Extract the value after "arg="*/
-//             /* 
-//              *environ is of type char *environ[] so environ[index]
-//              *give access to element at index postion in array
-//              *this value is also of type char *str so str[len] give access 
-//              *to the element that follow the str => environ[index][len]
-//              */
-//             if (environ[index][len] == '=')
-//             {
-//                 /* return pointer to the first byte after = */
-//                 return (environ[index] + len + 1);
-//             }
-//         }
-//     }
-//     return (NULL);
-// }
-
-char *_get_env(char *var)
+char *_get_env(char *arg)
 {
-    int idx, len;
+    /* get arg length */
+    int len, index;
 
-    if (var == NULL)
+    if (arg == NULL || environ == NULL)
         return (NULL);
-
-    len = _strlen(var);
-
-    if (environ != NULL)
+    len = _strlen(arg);
+    /* compare each element in array to arg */
+    for(index = 0; environ[index]; index++)
     {
-        for (idx = 0; environ[idx]; idx++)
+        if (_strncmp(arg, environ[index], len) == 0)
         {
-            if (_strncmp(var, environ[idx], len) == 0 && environ[idx][len] == '=')
-                return (environ[idx] + len + 1);
+            /* Extract the value after "arg="*/
+            /* 
+             *environ is of type char *environ[] so environ[index]
+             *give access to element at index postion in array
+             *this value is also of type char *str so str[len] give access 
+             *to the element that follow the str => environ[index][len]
+             */
+            if (environ[index][len] == '=')
+            {
+                /* return pointer to the first byte after = */
+                return (environ[index] + len + 1);
+            }
         }
     }
-
     return (NULL);
 }
-
 
 
 /**

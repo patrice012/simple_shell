@@ -23,16 +23,16 @@ void run_cmd(char *line_buffer, char **av)
     /*handle_variables(argv);*/
     /*handle_aliases(argv);*/
 
+    /* try to run built-in commands */
     cmd_status = run_built_in_command(argv, line_buffer);
-    printf("value of run_built_in_command: %d\n", cmd_status);
 
-    if (cmd_status == 1) /* mean not built-in commands ==> 1 succes */
-        /* run system command*/
+    if (cmd_status != 0) /* mean not built-in commands ==> 1 succes */
+        /* run system command */
         cmd_status = run_sys_cmd(argv, n, av);
-        printf("value of run_sys_cmd: %d\n", cmd_status);
 
-    // for (j = 0; j < n; j++)
-    //     free(argv[j]);
+    /* free argv */
+    for (j = 0; j < n; j++)
+        free(argv[j]);
 }
 
 
@@ -45,7 +45,7 @@ void run_cmd(char *line_buffer, char **av)
 
 int run_built_in_command(char **argv, char *line_buffer)
 {
-    int cmd_status, success = 1;
+    int cmd_status, success = 1;/* should be 0 for success */
 
     // if (_strcmp(argv[0], "exit") == 0)
     //     cmd_status = exit_shell(line_buffer, argv);
@@ -79,9 +79,7 @@ int run_sys_cmd(char **argv, int n, char **av)
     int child_pid, child_status = -1, j;
     struct stat st;
 
-    printf("value of argv[0]: %s\n", argv[0]);
     prog_path = parse_path(argv[0]);
-    printf("prog_path %s\n", prog_path);
     // if ((_strcmp(prog_path, argv[0]) == 0 && _strncmp(prog_path, "./", 2) != 0 &&
     //     (prog_path[0] != '/' && _strncmp(prog_path, "../", 3) != 0)) ||
     //     stat(prog_path, &st) != 0)
@@ -119,6 +117,6 @@ int run_sys_cmd(char **argv, int n, char **av)
         wait(&child_status);
 
     // free(prog_path);
-    printf("value of return: %d\n", (child_status / 256));
+    printf("run_sys_cmd\n");
     return (child_status / 256);
 }
