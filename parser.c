@@ -74,29 +74,31 @@ int parse_cmd(char *cmd, char **argv)
 char *parse_path(char *cmd)
 {
     char *path = _get_env("PATH");
-    char *token;
+    char *token, *abs_path;
 
-    if (path == NULL) {
-        return (strdup(cmd));
-    }
-
+    // if (path == NULL) {
+    //     return (strdup(cmd));
+    // }
+    printf("value of path: %s\n", path);
     token = strtok(path, ":");
     while (token != NULL) {
+        printf("value of token: %s\n", token);
         /* 
          *using length of token + length of cmd + 2 (1 for / and 1 for '\0')
          *because the output has this format token + / + cmd + '\0'
          */
-        char *abs_path = malloc(_strlen(token) + _strlen(cmd) + 2);
-        // sprintf(abs_path, "%s/%s", token, cmd);
+        abs_path = malloc(_strlen(token) + _strlen(cmd) + 2);
+        /* sprintf(abs_path, "%s/%s", token, cmd);*/
         build_abs_path(token, cmd, abs_path);
+        printf("value abs_path:%s\n", abs_path);
 
         /* if file exist and is an executable file */
         if (access(abs_path, X_OK) == 0) {
-            free(path);
+            // free(path);
             return (abs_path);
         }
 
-        free(abs_path);
+        // free(abs_path);
         token = strtok(NULL, ":");
     }
 

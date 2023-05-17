@@ -15,32 +15,7 @@ void run_cmd(char *line_buffer, char **av)
     rest = line_buffer;
     /* set temporary cmd to all the line_buffer */
     cmd = line_buffer;
-
-    // while (rest != NULL)
-    // {
-    //     /*split_cmds(rest, &sep, &cmd, &rest);*/
-    //     /*cmd_status = 0, hist++;*/
-
-    //     /* split cmd into array by using space as delimiter */
-    //     n = parse_cmd(cmd, argv);
-    //     if (n == 0)
-    //         break;
-    //     /*handle_variables(argv);*/
-    //     /*handle_aliases(argv);*/
-
-    //     cmd_status = run_built_in_command(argv, line_buffer);
-
-    //     if (cmd_status == 1) /* mean not built-in commands */
-    //         /* run system command*/
-    //         cmd_status = run_sys_cmd(argv, n, av);
-
-    //     for (j = 0; j < n; j++)
-    //         free(argv[j]);
-    // }
-
-    /*split_cmds(rest, &sep, &cmd, &rest);*/
-    /*cmd_status = 0, hist++;*/
-
+    
     /* split cmd into array by using space as delimiter */
     n = parse_cmd(cmd, argv);
     if (n == 0)
@@ -49,13 +24,15 @@ void run_cmd(char *line_buffer, char **av)
     /*handle_aliases(argv);*/
 
     cmd_status = run_built_in_command(argv, line_buffer);
+    printf("value of run_built_in_command: %d\n", cmd_status);
 
     if (cmd_status == 1) /* mean not built-in commands ==> 1 succes */
         /* run system command*/
         cmd_status = run_sys_cmd(argv, n, av);
+        printf("value of run_sys_cmd: %d\n", cmd_status);
 
-    for (j = 0; j < n; j++)
-        free(argv[j]);
+    // for (j = 0; j < n; j++)
+    //     free(argv[j]);
 }
 
 
@@ -102,18 +79,21 @@ int run_sys_cmd(char **argv, int n, char **av)
     int child_pid, child_status = -1, j;
     struct stat st;
 
+    printf("value of argv[0]: %s\n", argv[0]);
     prog_path = parse_path(argv[0]);
-    if ((_strcmp(prog_path, argv[0]) == 0 && _strncmp(prog_path, "./", 2) != 0 &&
-        (prog_path[0] != '/' && _strncmp(prog_path, "../", 3) != 0)) ||
-        stat(prog_path, &st) != 0)
+    printf("prog_path %s\n", prog_path);
+    // if ((_strcmp(prog_path, argv[0]) == 0 && _strncmp(prog_path, "./", 2) != 0 &&
+    //     (prog_path[0] != '/' && _strncmp(prog_path, "../", 3) != 0)) ||
+    //     stat(prog_path, &st) != 0)
+    // {
+    //     // free(prog_path);
+    //     // error_127(argv[0]);
+    //     return (127);
+    // }
+    // else if (access(prog_path, X_OK) == -1)
+    if (access(prog_path, X_OK) == -1)
     {
-        free(prog_path);
-        // error_127(argv[0]);
-        return (127);
-    }
-    else if (access(prog_path, X_OK) == -1)
-    {
-        free(prog_path);
+        // free(prog_path);
         // error_126(argv[0]);
         return (126);
     }
@@ -129,15 +109,16 @@ int run_sys_cmd(char **argv, int n, char **av)
         {
             // perror(prog_name);
             perror(*(av + 0));
-            for (j = 0; j < n; j++)
-                free(argv[j]);
-            free(prog_path);
+            // for (j = 0; j < n; j++)
+            //     free(argv[j]);
+            // free(prog_path);
             _exit(1);
         }
     }
     else if (child_pid > 0)
         wait(&child_status);
 
-    free(prog_path);
+    // free(prog_path);
+    printf("value of return: %d\n", (child_status / 256));
     return (child_status / 256);
 }

@@ -10,12 +10,11 @@
 
 char *_strcat(char *dest, char *src)
 {
+	int i, j;
 	if (dest == NULL || src == NULL)
 		return (NULL);
-
 	/* get the length of dest */
-	int i = _strlen(dest);
-	int j = 0;
+	i = _strlen(dest), j = 0;
 
 	/* add src to the end of dest */
 	while (src[j] != '\0')
@@ -40,11 +39,11 @@ char *_strcat(char *dest, char *src)
 
 int _strlen(char *s)
 {
+	int i;
+
 	if (s == NULL)
 		return (-1);
-
-	int i = 0;
-
+	i = 0;
 	while (s[i] != '\0')
 	{
 		i++;
@@ -65,13 +64,11 @@ int _strlen(char *s)
  */
 char *_strcpy(char *dest, char *src)
 {
-	if (dest == NULL || src == NULL)
-		return (NULL);
-
 	int len, i;
 
+	if (dest == NULL || src == NULL)
+		return (NULL);
 	len = _strlen(src);
-
 	for (i = 0; i < len; i++)
 	{
 		dest[i] = src[i];
