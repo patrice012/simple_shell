@@ -8,6 +8,8 @@
  */
 void run_cmd(char *line_buffer, char **av)
 {
+    print_str("redirection");
+    print_str(line_buffer);
     int n, j, cmd_status;
     char *argv[MAX_ARGS_COUNT + 1], *cmd, *rest, sep;
 
