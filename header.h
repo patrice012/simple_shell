@@ -33,13 +33,9 @@ extern char **environ;
 
 
 /* functions prototypes */
-void display_prompt(void);
-void run_program(char **user_input, int *status, char **av);
-void _strtok(char *str, char *delim, char **save);
-void exec_program(char *abs_path, char **args, char *av);
+
 void build_absolute_path(char *directory, char *filename, char *absolute_path);
 char *_exec_file(char *path);
-int check_command_existence(const char *command, char **executablePath);
 int run_built_in_command(char **argv, char *line_buffer);
 
 void shell_prompt(void);
@@ -47,8 +43,19 @@ void run_cmd(char *line_buffer, char **argv);
 int run_sys_cmd(char **argv, int n, char **av);
 void sig_handler(int sig);
 
+
+
+
+/* build-in commands */
+void shell_exit(void);
+void shell_env(void);
+/* end */
+
+/* parser function */
 int parse_cmd(char *cmd, char **argv);
 char *parse_path(char *cmd);
+void _strtok(char *str, char *delim, char **save);
+/* end */
 
 
 /* utils function */
@@ -64,8 +71,10 @@ char *_get_env(char *arg);
 void free_env(void);
 // int clean_up(char *str, ...);
 
+/* end */
 
-/* print */
+
+/* printf handler */
 void print_str(char *str);
 void print_error(char *str);
 void _print(char *str, int fd);

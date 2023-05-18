@@ -47,10 +47,13 @@ int run_built_in_command(char **argv, char *line_buffer)
 {
     int cmd_status, success = 0;/* should be change to 1 for success */
 
-    // if (_strcmp(argv[0], "exit") == 0)
-    //     cmd_status = exit_shell(line_buffer, argv);
-    // else if (_strcmp(argv[0], "env") == 0)
+    if (_strcmp(argv[0], "exit") == 0)
+        // cmd_status = exit_shell(line_buffer, argv);
+        shell_exit();
+
+    else if (_strcmp(argv[0], "env") == 0)
     //     _env();
+        shell_env();
     // else if (_strcmp(argv[0], "setenv") == 0)
     //     cmd_status = (_setenv(argv[1], argv[2]) ? 2 : 0);
     // else if (_strcmp(argv[0], "unsetenv") == 0)
@@ -104,6 +107,6 @@ int run_sys_cmd(char **argv, int n, char **av)
     else if (child_pid > 0)
         wait(&child_status);
 
-    // free(prog_path);
+    free(prog_path);
     return (child_status / 256);
 }
