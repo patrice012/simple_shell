@@ -20,12 +20,21 @@ int main(int argc, char **argv)
 	{
 		/*  shell work in interactive mode ? print prompt */
 		if (isatty(fd))
+		{	
 			shell_prompt();
+		}
 		/* read user input into line_buffer */
 		read = getline(&line_buffer, &len, stdin);
+		int i = 0;
+		while (argv[i])
+		{
+			printf("argv %d:%s\n",i, argv[i])
+			i++;
+		}
+
 
 		if (read == -1)
-			break;
+			return (-1);
 		line_buffer[read - 1] = '\0';
 		/* run cmd */
 		run_cmd(line_buffer, argv);

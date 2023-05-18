@@ -62,6 +62,7 @@ int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, size_t n);
 char *_get_env(char *arg);
 void free_env(void);
+// int clean_up(char *str, ...);
 
 
 /* print */

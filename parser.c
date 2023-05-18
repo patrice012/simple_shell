@@ -40,8 +40,16 @@ int parse_cmd(char *cmd, char **argv)
     int argc = 0; /* Number of arguments */
     char *arg; /* Current argument */
     char token; /* Tokenized substring */
-
-    arg = strtok(cmd, " \t\n"); /* Get the first argument */
+    char *cmd_copy = NULL; /* copy of the command */
+    /* dynamique allocation and copy cmd into cmd_copy */
+    cmd_copy = (char *)malloc(sizeof(char) * _strlen(cmd));
+    if (cmd_copy == NULL)
+    {
+        perror("tsh: memory allocation error");
+        return (-1);
+    }
+    _strcpy(cmd_copy, cmd);
+    arg = strtok(cmd_copy, " \t\n"); /* Get the first argument */
 
     while (arg != NULL)
     {
