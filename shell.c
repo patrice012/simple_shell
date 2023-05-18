@@ -1,6 +1,6 @@
 #include "header.h"
 
-void shell_prompt(void);
+
 
 /**
  * main - main function
