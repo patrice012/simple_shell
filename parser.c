@@ -85,6 +85,7 @@ char *parse_path(char *cmd)
     /* copy the path value*/
     char *path_copy = strdup(path);
     char *token, *abs_path;
+    struct stat st;
 
     if (path_copy == NULL) {
         return (strdup(cmd));
@@ -96,18 +97,19 @@ char *parse_path(char *cmd)
          *because the output has this format token + / + cmd + '\0'
          */
         abs_path = malloc(_strlen(token) + _strlen(cmd) + 2);
-        /* sprintf(abs_path, "%s/%s", token, cmd);*/
-        build_abs_path(token, cmd, abs_path);
+        build_absolute_path(token, cmd, abs_path);
 
         /* if file exist and is an executable file */
         if (access(abs_path, X_OK) == 0) {
-            // free(path_copy);
+            free(path_copy);
             return (abs_path);
         }
-
-        // free(abs_path);
+        free(abs_path);
         token = strtok(NULL, ":");
     }
+    /* check if command itself is a file_path that exists */
+    if (stat(cmd, &st) == 0)
+        return (cmd);
     free(path_copy);
-    return strdup(cmd);
+    return (NULL);
 }

@@ -26,7 +26,7 @@ void run_cmd(char *line_buffer, char **av)
     /* try to run built-in commands */
     cmd_status = run_built_in_command(argv, line_buffer);
 
-    if (cmd_status != 0) /* mean not built-in commands ==> 1 succes */
+    if (cmd_status == 0) /* mean not built-in commands ==> 1 succes */
         /* run system command */
         cmd_status = run_sys_cmd(argv, n, av);
 
@@ -45,7 +45,7 @@ void run_cmd(char *line_buffer, char **av)
 
 int run_built_in_command(char **argv, char *line_buffer)
 {
-    int cmd_status, success = 1;/* should be 0 for success */
+    int cmd_status, success = 0;/* should be change to 1 for success */
 
     // if (_strcmp(argv[0], "exit") == 0)
     //     cmd_status = exit_shell(line_buffer, argv);
@@ -60,8 +60,8 @@ int run_built_in_command(char **argv, char *line_buffer)
     // else if (_strcmp(argv[0], "alias") == 0)
     //     cmd_status = alias(argv);
     // else
-    //     success = 1;
-    return (success == 0 ? 0 : 1);
+    //     success = 0;
+    return (success);
 }
 
 
@@ -80,32 +80,20 @@ int run_sys_cmd(char **argv, int n, char **av)
     struct stat st;
 
     prog_path = parse_path(argv[0]);
-    // if ((_strcmp(prog_path, argv[0]) == 0 && _strncmp(prog_path, "./", 2) != 0 &&
-    //     (prog_path[0] != '/' && _strncmp(prog_path, "../", 3) != 0)) ||
-    //     stat(prog_path, &st) != 0)
-    // {
-    //     // free(prog_path);
-    //     // error_127(argv[0]);
-    //     return (127);
-    // }
-    // else if (access(prog_path, X_OK) == -1)
-    if (access(prog_path, X_OK) == -1)
+    if (prog_path == NULL)
     {
-        // free(prog_path);
-        // error_126(argv[0]);
-        return (126);
+        perror(*(av + 0));
+        return (-1); /* failure or error condition in the code */
     }
 
     child_pid = fork();
     if (child_pid == -1)
             perror(*(av + 0));
-        // perror(prog_name);c
 
     if (child_pid == 0)
     {
         if (execve(prog_path, argv, environ) == -1)
         {
-            // perror(prog_name);
             perror(*(av + 0));
             // for (j = 0; j < n; j++)
             //     free(argv[j]);
@@ -117,6 +105,5 @@ int run_sys_cmd(char **argv, int n, char **av)
         wait(&child_status);
 
     // free(prog_path);
-    printf("run_sys_cmd\n");
     return (child_status / 256);
 }

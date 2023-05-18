@@ -25,13 +25,6 @@ int main(int argc, char **argv)
 		}
 		/* read user input into line_buffer */
 		read = getline(&line_buffer, &len, stdin);
-		int i = 0;
-		while (argv[i])
-		{
-			printf("argv %d:%s\n",i, argv[i])
-			i++;
-		}
-
 
 		if (read == -1)
 			return (-1);

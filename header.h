@@ -37,7 +37,7 @@ void display_prompt(void);
 void run_program(char **user_input, int *status, char **av);
 void _strtok(char *str, char *delim, char **save);
 void exec_program(char *abs_path, char **args, char *av);
-void build_abs_path(char *directory, char *filename, char *absolute_path);
+void build_absolute_path(char *directory, char *filename, char *absolute_path);
 char *_exec_file(char *path);
 int check_command_existence(const char *command, char **executablePath);
 int run_built_in_command(char **argv, char *line_buffer);
