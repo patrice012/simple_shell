@@ -89,5 +89,8 @@ void print_str(char *str);
 void print_error(char *str);
 void _print(char *str, int fd);
 
+/* memory helper */
+void *_memcpy(void *dest, const void *src, size_t n);
+
 
 #endif
