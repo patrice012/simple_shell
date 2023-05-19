@@ -55,6 +55,9 @@ void shell_env(void);
 /* parser function */
 int parse_cmd(char *cmd, char **argv);
 char *parse_path(char *cmd);
+
+/* changed functions */
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 void _strtok(char *str, char *delim, char **save);
 /* end */
 

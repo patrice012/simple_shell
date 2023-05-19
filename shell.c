@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 		if (isatty(fd))
 			shell_prompt();
 		/* read user input into line_buffer */
-		read = getline(&line_buffer, &len, stdin);
+		read = _getline(&line_buffer, &len, stdin);
 		if (read == -1)
 			break;
 		line_buffer[read - 1] = '\0';
