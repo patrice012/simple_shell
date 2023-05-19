@@ -8,20 +8,23 @@
  */
 void run_cmd(char *line_buffer, char **av)
 {
-    print_str("redirection");
-    print_str(line_buffer);
     int n, j, cmd_status;
-    char *argv[MAX_ARGS_COUNT + 1], *cmd, *rest, sep;
+    char *argv[MAX_ARGS_COUNT + 1] = { NULL }, *cmd = NULL, sep;
+    // char *rest;
 
     /* copy the value of line_buffer into rest */
-    rest = line_buffer;
+    // rest = line_buffer;
     /* set temporary cmd to all the line_buffer */
-    cmd = line_buffer;
+    cmd = strdup(line_buffer);
     
     /* split cmd into array by using space as delimiter */
     n = parse_cmd(cmd, argv);
     if (n == 0)
+    {
+        free_array(argv);
+        // free_pointer(cmd);
         return;
+    }
     /*handle_variables(argv);*/
     /*handle_aliases(argv);*/
 
@@ -30,11 +33,10 @@ void run_cmd(char *line_buffer, char **av)
 
     if (cmd_status == 0) /* mean not built-in commands ==> 1 succes */
         /* run system command */
+    {
+        // free_pointer(cmd);
         cmd_status = run_sys_cmd(argv, n, av);
-
-    /* free argv */
-    for (j = 0; j < n; j++)
-        free(argv[j]);
+    }
 }
 
 
@@ -100,9 +102,9 @@ int run_sys_cmd(char **argv, int n, char **av)
         if (execve(prog_path, argv, environ) == -1)
         {
             perror(*(av + 0));
-            // for (j = 0; j < n; j++)
-            //     free(argv[j]);
-            // free(prog_path);
+            for (j = 0; j < n; j++)
+                free(argv[j]);
+            free(prog_path);
             _exit(1);
         }
     }

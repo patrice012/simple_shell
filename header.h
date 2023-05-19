@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <string.h>
+#include <stdarg.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -68,8 +69,14 @@ int _atoi(char *str);
 int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, size_t n);
 char *_get_env(char *arg);
+
+/* end*/
+
+
+/* deallocate memory functions */
 void free_env(void);
-// int clean_up(char *str, ...);
+void free_pointer(char *str, ...);
+void free_array(char **av);
 
 /* end */
 

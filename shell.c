@@ -20,29 +20,20 @@ int main(int argc, char **argv)
 	{
 		/*  shell work in interactive mode ? print prompt */
 		if (isatty(fd))
-		{	
 			shell_prompt();
-			/* read user input into line_buffer */
-			read = getline(&line_buffer, &len, stdin);
-
-		}
-		else /* Non-interactive mode */
-		{
-			read = getline(&line_buffer, &len, stdin);
-			if (read == -1)
-				break;
-		}
-
-		// if (read == -1)
-		// 	return (-1);
+		/* read user input into line_buffer */
+		read = getline(&line_buffer, &len, stdin);
+		if (read == -1)
+			break;
 		line_buffer[read - 1] = '\0';
 		/* run cmd */
 		run_cmd(line_buffer, argv);
 	}
 
 	/* free environ */
-	/*free_env();*/
-	/*free(line_buffer);*/
+	free_env();
+	free_pointer(line_buffer);
+	free_array(argv);
 	return (0);
 }
 

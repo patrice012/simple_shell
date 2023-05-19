@@ -38,7 +38,7 @@
 int parse_cmd(char *cmd, char **argv)
 {
     int argc = 0; /* Number of arguments */
-    char *arg; /* Current argument */
+    char *arg = NULL; /* Current argument */
     char token; /* Tokenized substring */
     char *cmd_copy = NULL; /* copy of the command */
     /* dynamique allocation and copy cmd into cmd_copy */
@@ -58,6 +58,9 @@ int parse_cmd(char *cmd, char **argv)
         arg = strtok(NULL, " \t\n"); /* Get the next argument */
     }
     argv[argc] = NULL; /* Set the last element of the array to NULL */
+
+    /* need to free cmd_copy and arg */
+    free_pointer(cmd_copy, arg, NULL);
     return (argc); /* Return the number of arguments */
 }
 
@@ -94,22 +97,24 @@ char *parse_path(char *cmd)
     while (token != NULL) {
         /* 
          *using length of token + length of cmd + 2 (1 for / and 1 for '\0')
-         *because the output has this format token + / + cmd + '\0'
+         *because the output has this format => token + / + cmd + '\0'
          */
         abs_path = malloc(_strlen(token) + _strlen(cmd) + 2);
         build_absolute_path(token, cmd, abs_path);
 
         /* if file exist and is an executable file */
         if (access(abs_path, X_OK) == 0) {
-            free(path_copy);
+            // free(path_copy);
+            free_pointer(path_copy, NULL);
             return (abs_path);
         }
-        free(abs_path);
+        // free(abs_path);
+        free_pointer(abs_path, NULL);
         token = strtok(NULL, ":");
     }
+    free_pointer(path_copy, token, abs_path, NULL);
     /* check if command itself is a file_path that exists */
     if (stat(cmd, &st) == 0)
         return (cmd);
-    free(path_copy);
     return (NULL);
 }

@@ -12,6 +12,7 @@
 
 void shell_exit(void)
 {
+    // _exit(0);
     exit(0);
 }
 
@@ -27,7 +28,6 @@ void shell_exit(void)
 
 void shell_env(void)
 {
-    char **env = environ;
     int i = 0;
 
     while (environ[i] != NULL)
