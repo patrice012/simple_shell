@@ -40,6 +40,7 @@ void free_pointer(char *ptr, ...)
         free(temp);
         temp = va_arg(arg, char *);
     }
+    temp = NULL;
     va_end(arg);
 }
 

@@ -91,6 +91,7 @@ void _print(char *str, int fd);
 
 /* memory helper */
 void *_memcpy(void *dest, const void *src, size_t n);
+void *_realloc(char *ptr, size_t old_size, size_t new_size);
 
 
 #endif

@@ -38,10 +38,55 @@ void *_memcpy(void *dest, const void *src, size_t n)
 
     if (dest == NULL || src == NULL)
     {
-        return (-1);
+        return (NULL);
     }
 
     for (i = 0; i < n; i++)
         copy_dest[i] = copy_src[i];
     /* copy_dest[i] = copy_src[i] <==> *(copy_dest + i) = *(copy_src + i); */
 }
+
+
+/**
+ * _realloc - reallocates a block of memory
+ *
+ * @ptr: pointer to malloc'ated block
+ * @old_size: byte size of current block
+ * @new_size: byte size of new block
+ *
+ * Return: pointer to the new memory block.
+ */
+
+ void *_realloc(char *ptr, size_t old_size, size_t new_size)
+ {
+    char *copy_ptr = (char *)ptr;
+    char *temp = NULL;
+    int size = 0;
+
+    if (ptr == NULL)
+        return ((char *)malloc(new_size));
+
+    else if (new_size == old_size)
+        return (ptr);
+
+    else if (ptr != NULL && new_size == 0)
+        {
+            free(ptr);
+            return (NULL);
+        }
+    else
+    {
+        /* create temporary storage */
+        temp = (char *)malloc(new_size);
+        if (temp == NULL)
+            return (NULL);
+        /* copy n bytes from ptr into temp */
+        size = old_size > new_size ? old_size : new_size;
+        _memcpy(temp, copy_ptr, size);
+        /* free pointer */
+        free(ptr);
+        copy_ptr = NULL, ptr = NULL;
+        /* return the new pointer with the new size */
+        return (temp);
+    }
+ }
