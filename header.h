@@ -23,7 +23,7 @@
  * #define MAX_FILENAME_LEN 256
  */
 
-#define BUFFER_SIZE 1024
+// #define BUFFER_SIZE 1024
 #define UNUSED __attribute__((unused))
 #define MAX_ARGS_COUNT 1000
 #define MAX_ARG_LEN 1000
