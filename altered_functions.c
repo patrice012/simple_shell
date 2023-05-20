@@ -1,7 +1,5 @@
 #include "header.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+
 
 #define MAX_SIZE 20
 
@@ -35,9 +33,33 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 ssize_t getline(char **lineptr, size_t *n, FILE *stream)
 {
     static char *buffer[BUFFER_SIZE];
+    static size_t buffer_size;
     ssize_t r;
 
-    r = read()
+    /* check if lineptr is null or n is null  */
+    if (*lineptr == NULL || *n == NULL)
+    {
+        /* initialize state */
+        *lineptr = (char *)malloc(BUFFER_SIZE);
+        *n = MAX_SIZE;
+    }
+    
+    do {
+        r = read(fileno(stream), lineptr, n);
+        /* test for error */
+        if (r == -1)
+        {
+            perror();
+            return (-1);
+        }
+        current_index = r;
+        /* test for end of file */
+        if (r == 0)
+            break;
+        
+
+
+    } while(r > 0)
 }
 
 int main() {
