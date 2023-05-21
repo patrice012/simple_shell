@@ -23,6 +23,7 @@ int main(int argc, char **argv)
 			shell_prompt();
 		/* read user input into line_buffer */
 		read = _getline(&line_buffer, &len, stdin);
+		printf("line: %s\n", line_buffer);
 		if (read == -1)
 			break;
 		line_buffer[read - 1] = '\0';
