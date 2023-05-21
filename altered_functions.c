@@ -5,8 +5,8 @@
 
 
 
-#define BUFFER_SIZE 4096
-#define READ_SIZE 10
+#define BUFFER_SIZE 100
+#define READ_SIZE 5
 
 
 ssize_t getline(char **lineptr, size_t *n, FILE *stream);
@@ -30,37 +30,92 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream);
  * the buffer should be freed by the user program even on failure.
  */
 
-ssize_t getline(char **lineptr, size_t *n, FILE *stream)
-{
-    static char *buffer[BUFFER_SIZE];
-    static size_t buffer_size;
-    ssize_t r;
 
-    /* check if lineptr is null or n is null  */
-    if (*lineptr == NULL || *n == NULL)
-    {
-        /* initialize state */
-        *lineptr = (char *)malloc(BUFFER_SIZE);
-        *n = MAX_SIZE;
+ssize_t getline(char **lineptr, size_t *n, FILE *stream) {
+    static char buffer[BUFFER_SIZE];
+    // static int buffer_position = 0;
+    int buffer_position = 0;
+    // static int buffer_size = 0;
+    ssize_t line_position = 0;
+    ssize_t r = 0;
+    int should_break = 0;
+
+    if (*lineptr == NULL || *n == 0) {
+        // Allocate initial memory for lineptr if it's NULL or size is 0
+        *lineptr = malloc(BUFFER_SIZE);
+        *n = BUFFER_SIZE;
     }
-    
+
     do {
-        r = read(fileno(stream), lineptr, n);
-        /* test for error */
+        /* read from file descriptor */
+        r = read(fileno(stream), buffer, *n);
+        /* verifcation */
         if (r == -1)
-        {
-            perror();
             return (-1);
-        }
-        current_index = r;
-        /* test for end of file */
+        
+        /* if no content to read */
         if (r == 0)
             break;
+
+        /* if the space avalaible is not enought, increase the size */
+        if (line_position + 1 >= *n)
+        {
+            *n += *n;
+            *lineptr = realloc(*lineptr, *n);
+        }
         
+        /* copy buffer elements into lineptr */
+        while (buffer[buffer_position])
+        {
+            /* check for end of line */
+            if (buffer[buffer_position] == '\n')
+            {
+                should_break = 1;
+                break;
+            }
+            else
+            {
+                /* if no more space in lineptr increase the size */
+                if (line_position + 1 >= *n)
+                {
+                    *n += *n;
+                    *lineptr = realloc(*lineptr, *n);
+                }
+                /* copy each character in buffer into lineptr */
+                (*lineptr)[line_position] = buffer[buffer_position];
+                buffer_position++;
+                line_position++;
+            }
+        }
+    } while (r > 0 && !should_break);
+    /* Null-terminate the line */
+    (*lineptr)[line_position] = '\0';
 
+    /* No more input and nothing read */
+    if (line_position == 0 && r == 0) {
+        return (-1);
+    }
 
-    } while(r > 0)
+    return (line_position);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 int main() {
     char *line = NULL;
@@ -70,6 +125,7 @@ int main() {
     while ((read = getline(&line, &len, stdin)) != -1) {
         // Process the line as needed
         printf("Line: %s\n", line);
+        // printf("Line:");
     }
 
     free(line);
