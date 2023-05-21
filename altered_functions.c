@@ -9,7 +9,7 @@
 #define READ_SIZE 5
 
 
-ssize_t getline(char **lineptr, size_t *n, FILE *stream);
+// ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 
 /**
  * _getline - reads an entire line from stream, 
@@ -31,13 +31,14 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream);
  */
 
 
-ssize_t getline(char **lineptr, size_t *n, FILE *stream) {
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
+{
     static char buffer[BUFFER_SIZE];
     // static int buffer_position = 0;
     int buffer_position = 0;
-    // static int buffer_size = 0;
     ssize_t line_position = 0;
-    ssize_t r = 0;
+    ssize_t r = 0, index = 0;
+    /* allow to breack the two loop at the same moment */
     int should_break = 0;
 
     if (*lineptr == NULL || *n == 0) {
@@ -60,8 +61,12 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream) {
         /* if the space avalaible is not enought, increase the size */
         if (line_position + 1 >= *n)
         {
-            *n += *n;
+            /* *n += *n; */
+            /* reserve the memory space needed to copy data from buffer to lineptr once only */
+            *n += r + 1;
             *lineptr = realloc(*lineptr, *n);
+            if (*lineptr == NULL)
+                return (-1);
         }
         
         /* copy buffer elements into lineptr */
@@ -70,24 +75,33 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream) {
             /* check for end of line */
             if (buffer[buffer_position] == '\n')
             {
+                /* if End of Line exit the two loops by setting should_break to True */
                 should_break = 1;
                 break;
             }
             else
             {
                 /* if no more space in lineptr increase the size */
-                if (line_position + 1 >= *n)
-                {
-                    *n += *n;
-                    *lineptr = realloc(*lineptr, *n);
-                }
+                /*
+                 * if (line_position + 1 >= *n)
+                 *  {
+                 *      *n += *n;
+                 *      *lineptr = realloc(*lineptr, *n);
+                 *  }
+                 */
+
                 /* copy each character in buffer into lineptr */
                 (*lineptr)[line_position] = buffer[buffer_position];
                 buffer_position++;
                 line_position++;
             }
         }
+        // Reset buffer position when it reaches the end
+        if (buffer_position >= r) {
+            buffer_position = 0;
+        }
     } while (r > 0 && !should_break);
+
     /* Null-terminate the line */
     (*lineptr)[line_position] = '\0';
 
@@ -117,20 +131,22 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream) {
 
 
 
-int main() {
-    char *line = NULL;
-    size_t len = 0;
-    ssize_t read;
+// int main() {
+//     char *line = NULL;
+//     size_t len = 0;
+//     ssize_t read;
 
-    while ((read = getline(&line, &len, stdin)) != -1) {
-        // Process the line as needed
-        printf("Line: %s\n", line);
-        // printf("Line:");
-    }
+//     while ((read = getline(&line, &len, stdin)) != -1) {
+//         // Process the line as needed
+//         printf("Line: %s\n", line);
+//         printf("Read: %ld\n", read);
+//         // printf("Line:");
+//     }
 
-    free(line);
-    return 0;
-}
+
+//     free(line);
+//     return 0;
+// }
 
 
 
