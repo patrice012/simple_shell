@@ -1,8 +1,5 @@
 #include "header.h"
 
-#define MAX_RANGE 2147483647
-#define MIN_RANGE -2147483648
-
 
 /**
  * _atoi - convert string to integer
