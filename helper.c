@@ -7,7 +7,7 @@
   * @absolute_path: the output path
   */
 
-void build_absolute_path(char *directory, char *filename, char *absolute_path)
+void create_absolute_path(char *directory, char *filename, char *absolute_path)
 {
     _strcpy(absolute_path, directory);
     _strcat(absolute_path, "/");
@@ -31,6 +31,8 @@ void build_absolute_path(char *directory, char *filename, char *absolute_path)
 
 void free_pointer(char *ptr, ...)
 {
+    if (ptr == NULL)
+      return; /* Nothing to free */
     va_list arg;
     va_start(arg, ptr);
 
@@ -62,7 +64,3 @@ void free_array(char **av)
   }
   free(av);
 }
-
-
-
-

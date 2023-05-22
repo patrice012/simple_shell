@@ -29,13 +29,17 @@
 #define MAX_ARG_LEN 1000
 #define PATH_MAX 4096
 
+// #define MAX_SIZE 100
+#define BUFFER_SIZE 100
+// #define READ_SIZE 50
+
 
 extern char **environ;
 
 
 /* functions prototypes */
 
-void build_absolute_path(char *directory, char *filename, char *absolute_path);
+void create_absolute_path(char *directory, char *filename, char *absolute_path);
 char *_exec_file(char *path);
 int run_built_in_command(char **argv, char *line_buffer);
 

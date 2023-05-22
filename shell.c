@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 			shell_prompt();
 		/* read user input into line_buffer */
 		read = _getline(&line_buffer, &len, stdin);
-		printf("line: %s\n", line_buffer);
+		/* Null-terminate the line */
 		if (read == -1)
 			break;
 		line_buffer[read - 1] = '\0';
@@ -32,9 +32,10 @@ int main(int argc, char **argv)
 	}
 
 	/* free environ */
-	free_env();
-	free_pointer(line_buffer);
-	free_array(argv);
+	// free_env();
+	// if (*line_buffer)
+	// free_pointer(line_buffer);
+	// free_array(argv);
 	return (0);
 }
 
