@@ -23,19 +23,18 @@ int main(int argc, char **argv)
 			shell_prompt();
 		/* read user input into line_buffer */
 		read = _getline(&line_buffer, &len, stdin);
-		/* Null-terminate the line */
 		if (read == -1)
 			break;
-		line_buffer[read - 1] = '\0';
-		/* run cmd */
-		run_cmd(line_buffer, argv);
+		/* check if the first character is not Null-terminate */
+		if (line_buffer[0] != '\0')
+			/* run cmd */
+			run_cmd(line_buffer, argv);
 	}
 
-	/* free environ */
-	// free_env();
-	// if (*line_buffer)
-	// free_pointer(line_buffer);
-	// free_array(argv);
+	/* cleaning the environment and all points */
+	free_env();
+	free_pointer(line_buffer);
+	free_array(argv);
 	return (0);
 }
 

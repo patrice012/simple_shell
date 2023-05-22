@@ -26,6 +26,8 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
     int buffer_position = 0;
     ssize_t line_position = 0;
     ssize_t r = 0, index = 0;
+    /* Variable to keep track of characters read */
+    ssize_t char_count = 0;
     /* allow to breack the two loop at the same moment */
     int should_break = 0;
 
@@ -38,12 +40,11 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
     do {
         /* read from file descriptor */
         r = read(fileno(stream), buffer, *n);
-        printf("read from:%ld\n", r);
         /* verifcation */
         if (r == -1)
             return (-1);
         /* if no content to read */
-        if (r == 0 || r == 1)
+        if (r == 0)
             break;
         /* 
          * if the space avalaible is not enought, increase the size. 
@@ -53,7 +54,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
         {
             /* *n *= *n; */
             /* 
-             *reserve the memory space needed to copy data 
+             * reserve the memory space needed to copy data 
              * from buffer to lineptr once only 
              */
             *n += r;
@@ -61,7 +62,6 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
             if (*lineptr == NULL)
                 return (-1);
         }
-        
         /* copy buffer elements into lineptr */
         while (index < r)
         {
@@ -79,24 +79,25 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
             }
             else
             {
-                /* copy each character in buffer into lineptr */
+                /* copy each character from buffer to lineptr */
                 (*lineptr)[line_position] = buffer[buffer_position];
                 buffer_position++;
                 line_position++;
+                /* Increment the character count including the delimiter */
+                char_count++;
             }
         }
         /*
          * returns the buffer position to 0 
          * if it reaches the end of the buffer 
          */
-        if (buffer_position >= r) {
+        if (buffer_position >= r)
             buffer_position = 0;
-        }
         index++;
     } while (r > 0 && !should_break);
 
     /* No more input and nothing read */
     if (line_position == 0 && r == 0)
         return (0);
-    return (line_position);
+    return (char_count);
 }
