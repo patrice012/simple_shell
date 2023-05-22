@@ -96,8 +96,8 @@ char *parse_path(char *cmd)
     token = strtok(path_copy, ":");
     while (token != NULL) {
         /* 
-         *using length of token + length of cmd + 2 (1 for / and 1 for '\0')
-         *because the output has this format => token + / + cmd + '\0'
+         * using length of token + length of cmd + 2 (1 for / and 1 for '\0')
+         * because the output has this format => token + / + cmd + '\0'
          */
         abs_path = malloc(_strlen(token) + _strlen(cmd) + 2);
         create_absolute_path(token, cmd, abs_path);

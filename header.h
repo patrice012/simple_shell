@@ -29,9 +29,7 @@
 #define MAX_ARG_LEN 1000
 #define PATH_MAX 4096
 
-// #define MAX_SIZE 100
 #define BUFFER_SIZE 100
-// #define READ_SIZE 50
 
 
 extern char **environ;

@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 
 	/* cleaning the environment and all points */
 	free_env();
-	free_pointer(line_buffer);
+	free_pointer(line_buffer, NULL);
 	free_array(argv);
 	return (0);
 }

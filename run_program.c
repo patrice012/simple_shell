@@ -10,10 +10,6 @@ void run_cmd(char *line_buffer, char **av)
 {
     int n, j, cmd_status;
     char *argv[MAX_ARGS_COUNT + 1] = { NULL }, *cmd = NULL, sep;
-    // char *rest;
-
-    /* copy the value of line_buffer into rest */
-    // rest = line_buffer;
     /* set temporary cmd to all the line_buffer */
     cmd = strdup(line_buffer);
     
@@ -32,7 +28,6 @@ void run_cmd(char *line_buffer, char **av)
     cmd_status = run_built_in_command(argv, line_buffer);
 
     if (cmd_status == 0) /* mean not built-in commands ==> 1 succes */
-        /* run system command */
     {
         // free_pointer(cmd);
         cmd_status = run_sys_cmd(argv, n, av);
@@ -52,11 +47,9 @@ int run_built_in_command(char **argv, char *line_buffer)
     int cmd_status, success = 0;/* should be change to 1 for success */
 
     if (_strcmp(argv[0], "exit") == 0)
-        // cmd_status = exit_shell(line_buffer, argv);
         shell_exit();
 
     else if (_strcmp(argv[0], "env") == 0)
-    //     _env();
         shell_env();
     // else if (_strcmp(argv[0], "setenv") == 0)
     //     cmd_status = (_setenv(argv[1], argv[2]) ? 2 : 0);
@@ -102,15 +95,15 @@ int run_sys_cmd(char **argv, int n, char **av)
         if (execve(prog_path, argv, environ) == -1)
         {
             perror(*(av + 0));
-            for (j = 0; j < n; j++)
-                free(argv[j]);
-            free(prog_path);
+            free_array(argv);
+            free_pointer(prog_path, NULL);
             _exit(1);
         }
     }
     else if (child_pid > 0)
         wait(&child_status);
 
-    free(prog_path);
+    // free(prog_path);
+    free_pointer(prog_path, NULL);
     return (child_status / 256);
 }
