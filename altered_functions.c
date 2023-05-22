@@ -19,6 +19,12 @@
  * the buffer should be freed by the user program even on failure.
  */
 
+/*
+ * ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
+ * {
+ *     getline(lineptr, n, stream);
+ * }
+ */
 
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {

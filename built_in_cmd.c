@@ -10,9 +10,17 @@
  * Exit the shell with a status code of 0 (success)
  */
 
-void shell_exit(void)
+void shell_exit(char **av UNUSED)
 {
     // _exit(0);
+    /* get exit status value */
+    char *_status = *(av + 1);
+    _status[0] = '8';
+    printf("status:%s\n", _status);
+    /* convert into integer */
+    int status = _atoi(_status);
+    if (status)
+        exit(status);
     exit(0);
 }
 
