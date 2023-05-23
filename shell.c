@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 			run_cmd(line_buffer, argv);
 	}
 
-	/* cleaning the environment and all points */
+	/* cleaning the environment and all pointers */
 	free_env();
 	free_pointer(line_buffer, NULL);
 	free_array(argv);

@@ -1,5 +1,5 @@
-#ifndef SHELL_H
-#define SHELL_H
+#ifndef HEADER_H
+#define HEADER_H
 
 /* standar libraries */
 
@@ -23,7 +23,6 @@
  * #define MAX_FILENAME_LEN 256
  */
 
-// #define BUFFER_SIZE 1024
 #define UNUSED __attribute__((unused))
 #define MAX_ARGS_COUNT 1000
 #define MAX_ARG_LEN 1000
@@ -51,9 +50,11 @@ void sig_handler(int sig);
 /* build-in commands */
 void shell_exit(char **av);
 void shell_env(void);
+int _setenv(char *variable, char *value);
+void _unsetenv(char *variable);
 /* end */
 
-/* parser function */
+/* parser functions */
 int parse_cmd(char *cmd, char **argv);
 char *parse_path(char *cmd);
 
@@ -63,7 +64,7 @@ void _strtok(char *str, char *delim, char **save);
 /* end */
 
 
-/* utils function */
+/* utils functions */
 char *_strcat(char *dest, char *src);
 int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
@@ -73,7 +74,7 @@ int _atoi(char *str);
 int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, size_t n);
 char *_get_env(char *arg);
-
+int _is_env_variable(char *name, char **environ);
 /* end*/
 
 
@@ -89,6 +90,7 @@ void free_array(char **av);
 void print_str(char *str);
 void print_error(char *str);
 void _print(char *str, int fd);
+
 
 /* memory helper */
 void *_memcpy(void *dest, const void *src, size_t n);

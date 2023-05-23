@@ -52,7 +52,8 @@ int run_built_in_command(char **av, char *line_buffer)
     else if (_strcmp(av[0], "env") == 0)
         shell_env();
     // else if (_strcmp(av[0], "setenv") == 0)
-    //     cmd_status = (_setenv(av[1], av[2]) ? 2 : 0);
+    //     // cmd_status = (_setenv(av[1], av[2]) ? 2 : 0);
+    //     _setenv(char *variable, char *value);
     // else if (_strcmp(av[0], "unsetenv") == 0)
     //     cmd_status = (_unsetenv(av[1]) ? 2 : 0);
     // else if (_strcmp(av[0], "cd") == 0)

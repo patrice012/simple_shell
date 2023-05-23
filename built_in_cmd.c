@@ -43,3 +43,24 @@ void shell_env(void)
         i++;
     }
 }
+
+
+/**
+ * _setenv - Sets the value of an environment variable or
+ * creates a new one if it doesn't exist.
+ * @variable: The name of the environment variable.
+ * @value: The value to be assigned to the environment variable.
+ * 
+ * Return: Returns 0 on success or -1 on failure.
+ */
+
+/*
+ * Usage: setenv VARIABLE VALUE
+ */
+
+// int _setenv(char *variable, char *value)
+// {
+//     if (variable == NULL || value == NULL)
+//         return (-1);
+    
+// }
