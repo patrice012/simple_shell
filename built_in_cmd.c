@@ -12,7 +12,7 @@
 
 void shell_exit(char **av)
 {
-    // _exit(0);
+    /* _exit(0); */
     /* get exit status value */
     char *_status = *(av + 1);
     /* convert into integer */
