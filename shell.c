@@ -1,6 +1,6 @@
 #include "header.h"
 
-
+void sig_handler(int sig);
 
 /**
  * main - main function
@@ -16,11 +16,14 @@ int main(int argc, char **argv)
 	ssize_t read;
 	int status, fd = STDIN_FILENO;
 
+	signal(SIGINT, sig_handler);
+
 	while (1)
 	{
+
 		/*  shell work in interactive mode ? print prompt */
 		if (isatty(fd))
-			shell_prompt();
+				shell_prompt();
 		/* read user input into line_buffer */
 		read = _getline(&line_buffer, &len, stdin);
 		if (read == -1)
@@ -30,6 +33,9 @@ int main(int argc, char **argv)
 			/* run cmd */
 			run_cmd(line_buffer, argv);
 	}
+
+		if (isatty(fd))
+			print_str("\n");
 
 	/* cleaning the environment and all pointers */
 	free_env();
@@ -48,4 +54,18 @@ void shell_prompt(void)
 {
 	print_str("$ ");
 	fflush(stdout);
+}
+
+
+
+/**
+ * sig_handler - handle SIGINT signal
+ *
+ * @sig: signal value
+ */
+void sig_handler(int sig)
+{
+	print_str("\n");
+	shell_prompt();
+	(void) sig;
 }

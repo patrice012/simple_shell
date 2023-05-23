@@ -45,33 +45,6 @@ void shell_env(void)
         i++;
     }
 }
-
-
-/**
- * _unsetenv - unsets an environmental variable
- *
- * @var_name: var_name of variable to be unset.
- *
- * Return: 0 on success, -1 on fail
- *
- * note: the algorithm unsets by shifting all
- *        successive entries back one element.
- */
-
-int _unsetenv( char *variable) {
-    if (variable == NULL) {
-        print_error("unsetenv: Invalid argument\n");
-        return -1;
-    }
-    
-    int result = _putenv((char *)variable);
-    
-    if (result != 0) {
-        print_error("unsetenv: Failed to unset the environment variable\n");
-        return -1;
-    }
-        return 0;
-}
     
 
 /**
@@ -192,3 +165,32 @@ int _putenv(char *str) {
 
     return 0; /* Success */
 }
+
+
+/**
+ * _unsetenv - unsets an environmental variable
+ *
+ * @var_name: var_name of variable to be unset.
+ *
+ * Return: 0 on success, -1 on fail
+ *
+ * note: the algorithm unsets by shifting all
+ *        successive entries back one element.
+ */
+
+int _unsetenv( char *variable) {
+    if (variable == NULL) {
+        print_error("unsetenv: Invalid argument\n");
+        return -1;
+    }
+    
+    int result = _putenv((char *)variable);
+    
+    if (result != 0) {
+        print_error("unsetenv: Failed to unset the environment variable\n");
+        return -1;
+    }
+        return 0;
+}
+
+/* end */
