@@ -39,17 +39,17 @@ extern char **environ;
 
 void create_absolute_path(char *directory, char *filename, char *absolute_path);
 char *_exec_file(char *path);
-int run_built_in_command(char **argv, char *line_buffer);
+int run_built_in_command(char **av, char *line_buffer);
 
 void shell_prompt(void);
 void run_cmd(char *line_buffer, char **argv);
-int run_sys_cmd(char **argv, int n, char **av);
+int run_sys_cmd(char **av, int n, char **argv);
 void sig_handler(int sig);
 
 
 
 /* build-in commands */
-void shell_exit(void);
+void shell_exit(char **av);
 void shell_env(void);
 /* end */
 

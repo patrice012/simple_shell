@@ -1,18 +1,19 @@
 #include "header.h"
 
 
-
-
 /**
  * _atoi - convert string to integer
  * @str: string
  * Return: returns integer.
  * note: *10 is an indication if digit.
  */
+
 int _atoi(char *str)
 {
-    int res = 0, sign = 1;
-    int i = 0;
+    int i = 0, sign = 1, result = 0;
+    
+    if (str == NULL)
+        return (0);
 
     while (str[i] == ' ')
         i++;
@@ -27,13 +28,12 @@ int _atoi(char *str)
 
     while (str[i] >= '0' && str[i] <= '9')
     {
-        res = res * 10 + (str[i] - '0');
+        /* convert to integer */
+        result = result * 10 + (str[i] - '0');
         i++;
     }
-
-    return (sign * res);
+    return (result * sign);
 }
-
 
 
 /**
