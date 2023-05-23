@@ -49,7 +49,7 @@ char *_get_env(char *arg)
     if (arg == NULL || environ == NULL)
         return (NULL);
 
-    len = strlen(arg);
+    len = _strlen(arg);
     index = _is_env_variable(arg, environ);
 
     if (index == -1)
@@ -75,21 +75,8 @@ char *_get_env(char *arg)
  * free_env - frees the memory that the environment copy
  * takes.
  */
-// void free_env(void)
-// {
-//     // int i;
-
-//     // for (i = 0; environ[i] != NULL; i++)
-//     //     free(environ[i]);
-//     // free(environ);
-//     free_array(environ);
-// }
-
-
-int main(void)
+void free_env(void)
 {
-    char *path = _get_env("PATH");
-    printf("path: %s\n", path);
-    int i = _is_env_variable("PATH", environ);
-    printf("index: %d\n", i);
+    free_array(environ);
 }
+
