@@ -9,10 +9,24 @@
 
 void create_absolute_path(char *directory, char *filename, char *absolute_path)
 {
-    _strcpy(absolute_path, directory);
-    _strcat(absolute_path, "/");
-    _strcat(absolute_path, filename);
-    _strcat(absolute_path, "\0");
+    _format(directory, filename, absolute_path, "/");
+}
+
+
+/**
+  * _format - format the string output base on the delimeter
+  * @save_char: string to hold the result
+  * @first_char: 1rst string to add
+  * @second_char: 2nd string to concatenate
+  * @delim: delimiter to use
+  */
+
+void _format(char *first_char, char *second_char, char *save_char, char *delim)
+{
+    _strcpy(save_char, first_char);
+    _strcat(save_char, delim);
+    _strcat(save_char, second_char);
+    _strcat(save_char, "\0");
 }
 
 
@@ -20,7 +34,7 @@ void create_absolute_path(char *directory, char *filename, char *absolute_path)
  * free_pointer - free all pointers
  * @ptr: first pointer to free
  * @...: variable arguments, terminated by a NULL pointer
- * the last argument should be NULL
+ * the last argument should be NULL - Mandatory
  * Return: 0 if success and -1 if fail
  */
 

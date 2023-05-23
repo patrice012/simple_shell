@@ -80,7 +80,7 @@ void *_memcpy(void *dest, const void *src, size_t n)
         temp = (char *)malloc(new_size);
         if (temp == NULL)
             return (NULL);
-        /* copy n bytes from ptr into temp */
+        /* copy n bytes from ptr = copy_ptr into temp */
         size = old_size > new_size ? old_size : new_size;
         _memcpy(temp, copy_ptr, size);
         /* free pointer */

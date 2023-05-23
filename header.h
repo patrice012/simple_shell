@@ -50,8 +50,9 @@ void sig_handler(int sig);
 /* build-in commands */
 void shell_exit(char **av);
 void shell_env(void);
-int _setenv(char *variable, char *value);
-void _unsetenv(char *variable);
+// int _unsetenv(char *var_name);
+int _unsetenv( char *variable);
+int _setenv( char *variable,  char *value);
 /* end */
 
 /* parser functions */
@@ -75,6 +76,9 @@ int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, size_t n);
 char *_get_env(char *arg);
 int _is_env_variable(char *name);
+int _get_env_len(void);
+void _format(char *first_char, char *second_char, char *save_char, char *delim)
+;
 /* end*/
 
 

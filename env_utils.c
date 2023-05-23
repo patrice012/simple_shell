@@ -18,7 +18,7 @@ int _is_env_variable (char *var_name)
 
     while (environ[index])
     {
-        /* compare len=n charachters of each element in array to name */
+        /* compare len=n characters of each element in array to name */
         if (_strncmp(environ[index], var_name, len) == 0)
             {
                 return (index);
@@ -32,9 +32,8 @@ int _is_env_variable (char *var_name)
 
 
 /**
- * _getenv - Gets an environmental variable value if exist.
- *
- * @var: the name of the environmental variable.
+ * _get_env - Gets an environmental variable value if exist.
+ * @arg: the name of the environmental variable.
  *
  * Return: Null if environmental variable doesnt exist.
  *         Otherwise, value of environmental variable.
@@ -62,7 +61,11 @@ char *_get_env(char *arg)
      */
     if (environ[index][len] == '=')
     {
-        /* return pointer to the first byte after = */
+        /* 
+         * return pointer to the first byte after = 
+         * environ[index] + len + 1 calculates a new memory address 
+         * by moving the pointer len + 1 elements forward.
+         */
         return (environ[index] + len + 1);
     }
     return (NULL);
@@ -76,5 +79,20 @@ char *_get_env(char *arg)
 void free_env(void)
 {
     free_array(environ);
+}
+
+
+/**
+ * _getenvLen - gets the number of variables
+ *              inside an environment.
+ * Return: number of variables.
+ */
+int _get_env_len(void)
+{
+    int count = 0;
+
+    while (environ[count] != NULL)
+        count++;
+    return (count);
 }
 
