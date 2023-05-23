@@ -58,9 +58,11 @@ void shell_env(void)
  * Usage: setenv VARIABLE VALUE
  */
 
-// int _setenv(char *variable, char *value)
-// {
-//     if (variable == NULL || value == NULL)
-//         return (-1);
+int _setenv(char *variable, char *value)
+{
+    int index = _is_env_variable(variable)
+    if (variable == NULL || value == NULL)
+        return (-1);
+
     
-// }
+}

@@ -1,15 +1,13 @@
 #include "header.h"
 
-extern char **environ;
 
 /**
  * _get_env_variable - check if variable is an environement varaible
  * @var_name: varable name
- * @environ: environ array
  * Return: index of the varaible if exist and -1 if not
  */
 
-int _is_env_variable (char *var_name, char **environ)
+int _is_env_variable (char *var_name)
 {
     int index = 0, len = 0;
 
@@ -20,7 +18,7 @@ int _is_env_variable (char *var_name, char **environ)
 
     while (environ[index])
     {
-        /* compare each element in array to name */
+        /* compare len=n charachters of each element in array to name */
         if (_strncmp(environ[index], var_name, len) == 0)
             {
                 return (index);
@@ -50,7 +48,7 @@ char *_get_env(char *arg)
         return (NULL);
 
     len = _strlen(arg);
-    index = _is_env_variable(arg, environ);
+    index = _is_env_variable(arg);
 
     if (index == -1)
         return (NULL);

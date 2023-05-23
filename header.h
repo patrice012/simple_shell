@@ -74,7 +74,7 @@ int _atoi(char *str);
 int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, size_t n);
 char *_get_env(char *arg);
-int _is_env_variable(char *name, char **environ);
+int _is_env_variable(char *name);
 /* end*/
 
 
