@@ -43,7 +43,7 @@ void run_cmd(char *line_buffer, char **argv)
 
 int run_built_in_command(char **av, UNUSED char *line_buffer)
 {
-	int success = 0;/* cmd_status should be change to 1 for success */
+	int success = 1;/* cmd_status should be change to 1 for success */
 
 	if (_strcmp(av[0], "exit") == 0)
 		shell_exit(av);
@@ -60,8 +60,8 @@ int run_built_in_command(char **av, UNUSED char *line_buffer)
 	/*cmd_status = change_dir(av[1]);*/
 	/*else if (_strcmp(av[0], "alias") == 0)*/
 	/*cmd_status = alias(av);*/
-	/* else*/
-	/* success = 0;*/
+	else
+		success = 0;
 	return (success);
 }
 
