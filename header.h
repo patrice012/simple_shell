@@ -61,11 +61,15 @@ void shell_exit(char **av);
 void shell_env(void);
 int _unsetenv( char *variable);
 int _setenv( char *variable,  char *value);
+char *format_tilde(char *str);
+int change_dir(char *dir);
+int alias(char **tokens);
 /* end */
 
 /* parser functions */
 int parse_cmd(char *cmd, char **argv);
 char *parse_path(char *cmd);
+void split_cmds(char *buffer, UNUSED char *separator, char **cmd, char **rest);
 
 /* changed functions */
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
@@ -79,6 +83,7 @@ int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
 char *_strdup(char *s);
 char *_strchr(char *str, int ch);
+char *_substr(char *src, int m, int n);
 int _atoi(char *str);
 int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, size_t n);
@@ -90,6 +95,9 @@ void _format(char *first_char, char *second_char, char *save_char, char *delim)
 int process_file(char *file, int *fd);
 int setup_env(void);
 /* end*/
+
+int print_alias(char *name);
+int set_alias(char *new_value);
 
 
 /* deallocate memory functions */

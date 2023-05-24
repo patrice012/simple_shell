@@ -102,8 +102,6 @@ char *_strdup(char *s)
 	{
 		for (i = 0; i < len; i++)
 			copy[i] = s[i];
-		/* Null-terminate the string */
-		copy[len] = '\0';
 	}
 
 	return (copy);
