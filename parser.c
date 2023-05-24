@@ -80,7 +80,7 @@ int parse_cmd(char *cmd, char **argv)
 
 char *parse_path(char *cmd)
 {
-	char *path = _get_env("PATH");
+	char *path = getenv("PATH"); /* _getenv */
 	/* copy the path value*/
 	char *path_copy = strdup(path);
 	char *token, *abs_path;
@@ -96,7 +96,8 @@ char *parse_path(char *cmd)
 		 * because the output has this format => token + / + cmd + '\0'
 		 */
 		abs_path = malloc(_strlen(token) + _strlen(cmd) + 2);
-		create_absolute_path(token, cmd, abs_path);
+		/*create_absolute_path(token, cmd, abs_path);*/
+		snprintf(abs_path, (_strlen(token) + _strlen(cmd) + 2), "%s/%s", token, cmd);
 		/* if file exist and is an executable file */
 		if (access(abs_path, X_OK) == 0)
 		{
