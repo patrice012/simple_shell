@@ -111,50 +111,29 @@ int _putenv(char *str)
 {
 	size_t len, key_len, environ_len, i;
 	const char *sep;
-	char *copy;
-	char **new_environ;
+	char *copy, **new_environ;
 	int found;
-	/* Invalid argument or missing '=' character */
-	if (str == NULL || str[0] == '\0' || strchr(str, '=') == NULL)
-		return (-1);
-	/* Find the length of the input string */
-	len = _strlen(str);
-	/* Search for the '=' character to determine the key-value separation */
-	sep = _strchr(str, '=');
+
+	len = _strlen(str), sep = _strchr(str, '=');
 	if (sep == NULL)
-	{
-		return (-1); /* Invalid argument, missing '=' character */
-	}
-	/* Calculate the length of the key and value */
+		return (-1);
 	key_len = sep - str;
-	/*value_len = len - key_len - 1;*/
-	/* Create a copy of the input string*/
 	copy = malloc((len + 1) * sizeof(char));
 	if (copy == NULL)
-	{
-		return (-1); /* Failed to allocate memory*/
-	}
+		return (-1);
 	_strcpy(copy, str);
-
-	/* Update or add the environment variable*/
-	new_environ = NULL;
-	found = 0;
-	environ_len = _get_env_len();
-
-	/* Allocate memory for the updated environment */
+	new_environ = NULL, found = 0, environ_len = _get_env_len();
 	new_environ = malloc((environ_len + 2) * sizeof(char *));
 	if (new_environ == NULL)
 	{
 		free(copy);
-		return (-1); /* Failed to allocate memory */
+		return (-1);
 	}
-	/* Copy the existing environment variables */
 	for (i = 0; i < environ_len; i++)
 	{
 		new_environ[i] = environ[i];
 		if (_strncmp(environ[i], str, key_len) == 0 && environ[i][key_len] == '=')
 		{
-			/* Found an existing variable, update its value*/
 			free(environ[i]);
 			environ[i] = copy;
 			found = 1;
@@ -168,7 +147,6 @@ int _putenv(char *str)
 		environ = new_environ;
 	}
 	else
-		/* Free the new environment if variable was found */
 		free(new_environ);
 	return (0); /* Success */
 }
@@ -204,7 +182,7 @@ int _unsetenv(char *variable)
 		if (_strncmp(variable, *ep, len) == 0 && (*ep)[len] == '=')
 		{
 			sp = ep;
-			/*free(*sp);*/
+			free(*sp);
 			for (sp = ep; *sp; sp++)
 				*sp = *(sp + 1);
 		}
