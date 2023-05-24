@@ -24,7 +24,6 @@ void _strtok(char *str, char *delim, char **save)
 	}
 	/* set environment variable to NULL */
 	*(save + i) = NULL;
-	return;
 }
 
 

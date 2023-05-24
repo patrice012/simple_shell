@@ -1,7 +1,7 @@
 #include "header.h"
 
 /**
-  * build_absolute_path - create an absolute path
+  * create_absolute_path - create an absolute path
   * @directory: path to the directory
   * @filename: filename
   * @absolute_path: the output path
@@ -9,7 +9,7 @@
 
 void create_absolute_path(char *directory, char *filename, char *absolute_path)
 {
-    _format(directory, filename, absolute_path, "/");
+	_format(directory, filename, absolute_path, "/");
 }
 
 
@@ -23,10 +23,10 @@ void create_absolute_path(char *directory, char *filename, char *absolute_path)
 
 void _format(char *first_char, char *second_char, char *save_char, char *delim)
 {
-    _strcpy(save_char, first_char);
-    _strcat(save_char, delim);
-    _strcat(save_char, second_char);
-    _strcat(save_char, "\0");
+	_strcpy(save_char, first_char);
+	_strcat(save_char, delim);
+	_strcat(save_char, second_char);
+	_strcat(save_char, "\0");
 }
 
 
@@ -39,25 +39,25 @@ void _format(char *first_char, char *second_char, char *save_char, char *delim)
  */
 
 
-/*
- * Usage: free_pointer(ptr1; ptr2, ptr3, NULL);
- */
-
 void free_pointer(char *ptr, ...)
 {
-    if (ptr == NULL)
-      return; /* Nothing to free */
-    va_list arg;
-    va_start(arg, ptr);
+	va_list arg;
+	char *temp;
 
-    char *temp = ptr;
-    while (temp != NULL)
-    {
-        free(temp);
-        temp = va_arg(arg, char *);
-    }
-    temp = NULL;
-    va_end(arg);
+	if (ptr == NULL)
+		return;
+
+	va_start(arg, ptr);
+
+	temp = ptr;
+
+	while (temp != NULL)
+	{
+		free(temp);
+		temp = va_arg(arg, char *);
+	}
+	temp = NULL;
+	va_end(arg);
 }
 
 
@@ -69,12 +69,12 @@ void free_pointer(char *ptr, ...)
 
 void free_array(char **av)
 {
-  int i = 0;
+	int i = 0;
 
-  while (av[i] != NULL)
-  {
-    free(av[i]);
-    i++;
-  }
-  free(av);
+	while (av[i] != NULL)
+	{
+		free(av[i]);
+		i++;
+	}
+	free(av);
 }

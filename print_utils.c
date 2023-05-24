@@ -9,10 +9,10 @@
 
 void _print(char *str, int fd)
 {
-    int len = 0;
+	int len = 0;
 
-    len = _strlen(str);
-    write(fd, str, len);
+	len = _strlen(str);
+	write(fd, str, len);
 }
 
 /**
@@ -23,7 +23,7 @@ void _print(char *str, int fd)
 
 void print_str(char *str)
 {
-    _print(str, STDOUT_FILENO);
+	_print(str, STDOUT_FILENO);
 }
 
 
@@ -35,5 +35,5 @@ void print_str(char *str)
 
 void print_error(char *str)
 {
-    _print(str, STDERR_FILENO);
+	_print(str, STDERR_FILENO);
 }

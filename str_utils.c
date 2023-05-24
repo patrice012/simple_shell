@@ -11,6 +11,7 @@
 char *_strcat(char *dest, char *src)
 {
 	int i, j;
+
 	if (dest == NULL || src == NULL)
 		return (NULL);
 	/* get the length of dest */

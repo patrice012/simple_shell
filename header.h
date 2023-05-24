@@ -50,7 +50,6 @@ void sig_handler(int sig);
 /* build-in commands */
 void shell_exit(char **av);
 void shell_env(void);
-// int _unsetenv(char *var_name);
 int _unsetenv( char *variable);
 int _setenv( char *variable,  char *value);
 /* end */

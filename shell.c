@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 
 		/*  shell work in interactive mode ? print prompt */
 		if (isatty(fd))
-				shell_prompt();
+			shell_prompt();
 		/* read user input into line_buffer */
 		read = _getline(&line_buffer, &len, stdin);
 		if (read == -1)
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 
 
 /**
-  * display_prompt - display the prompt to user
+  * shell_prompt - display the prompt to user
   * Return: Nothing
   */
 
