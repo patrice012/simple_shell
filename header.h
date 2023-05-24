@@ -9,6 +9,9 @@
 #include <string.h>
 #include <stdarg.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <signal.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
@@ -32,6 +35,9 @@
 
 
 extern char **environ;
+extern int status_code;
+extern char *program_name;
+
 
 
 /* functions prototypes */
@@ -45,6 +51,9 @@ void run_cmd(char *line_buffer, char **argv);
 int run_sys_cmd(char **av, int n, char **argv);
 void sig_handler(int sig);
 
+
+/* error */
+/*void error_file(char *file);*/
 
 
 /* build-in commands */
@@ -78,6 +87,8 @@ int _is_env_variable(char *name);
 int _get_env_len(void);
 void _format(char *first_char, char *second_char, char *save_char, char *delim)
 ;
+int process_file(char *file, int *fd);
+int setup_env(void);
 /* end*/
 
 

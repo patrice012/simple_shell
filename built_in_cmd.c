@@ -184,10 +184,33 @@ int _putenv(char *str)
  *        successive entries back one element.
  */
 
-int _unsetenv(char *variable __attribute__((unused)))
+
+int _unsetenv(char *variable)
 {
-	/* your code here */
+	int len;
+	char **ep, **sp;
+
+	if (variable == NULL || variable[0] == '\0' || _strchr(variable, '=') != NULL)
+	{
+		print_error("Error: Invalid Arguments!\n");
+		return (-1);
+	}
+
+	len = _strlen(variable);
+
+	for (ep = environ; *ep;)
+	{
+		if (_strncmp(variable, *ep, len) == 0 && (*ep)[len] == '=')
+		{
+			sp = ep;
+			/*free(*sp);*/
+			for (sp = ep; *sp; sp++)
+				*sp = *(sp + 1);
+		}
+		else
+			ep++;
+	}
 	return (0);
 }
 
-/* end */
+/* your code here */
