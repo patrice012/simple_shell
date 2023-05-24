@@ -67,9 +67,10 @@ int _setenv(char *variable, char *value)
 	int result;
 	char *env;
 
-	if (variable == NULL || value == NULL)
+	if (variable == NULL || value == NULL ||
+		variable[0] == '\0' || _strchr(variable, '=') != NULL)
 	{
-		print_error("setenv: Invalid arguments\n");
+		print_error("Error: Invalid arguments\n");
 		return (-1);
 	}
 
