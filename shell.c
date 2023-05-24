@@ -9,23 +9,28 @@ void sig_handler(int sig);
  * Return: always 0
  */
 
-int main(int argc __attribute__((unused)), char **argv)
+int main(int argc, char **argv)
 {
 	char *line_buffer = NULL;
 	size_t len = 0;
 	ssize_t read;
 	int fd = STDIN_FILENO; /* set status */
 
+	if (argc > 1 || argv == NULL)
+	{
+		print_error("Please run with no arguments\n");
+		exit(127);
+	}
+
 	signal(SIGINT, sig_handler);
 
 	while (1)
 	{
-
 		/*  shell work in interactive mode ? print prompt */
 		if (isatty(fd))
 			shell_prompt();
 		/* read user input into line_buffer */
-		read = _getline(&line_buffer, &len, stdin);
+		read = getline(&line_buffer, &len, stdin);
 		if (read == -1)
 			break;
 		/* check if the first character is not Null-terminate */
