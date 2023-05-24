@@ -44,6 +44,7 @@ void *_memcpy(void *dest, const void *src, size_t n)
 	for (i = 0; i < n; i++)
 		copy_dest[i] = copy_src[i];
 	/* copy_dest[i] = copy_src[i] <==> *(copy_dest + i) = *(copy_src + i); */
+	return (dest);
 }
 
 

@@ -35,7 +35,6 @@ int parse_cmd(char *cmd, char **argv)
 {
 	int argc = 0; /* Number of arguments */
 	char *arg = NULL; /* Current argument */
-	char token; /* Tokenized substring */
 	char *cmd_copy = NULL; /* copy of the command */
 	/* dynamique allocation and copy cmd into cmd_copy */
 	cmd_copy = (char *)malloc(sizeof(char) * _strlen(cmd));

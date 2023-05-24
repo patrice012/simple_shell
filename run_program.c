@@ -8,8 +8,8 @@
  */
 void run_cmd(char *line_buffer, char **argv)
 {
-	int n, j, cmd_status;
-	char *av[MAX_ARGS_COUNT + 1] = { NULL }, *cmd = NULL, sep;
+	int n, cmd_status;
+	char *av[MAX_ARGS_COUNT + 1] = { NULL }, *cmd = NULL;
 	/* set temporary cmd to all the line_buffer */
 
 	cmd = strdup(line_buffer);
@@ -41,9 +41,9 @@ void run_cmd(char *line_buffer, char **argv)
  * Return: 0 for success and 1 for failure
  */
 
-int run_built_in_command(char **av, char *line_buffer)
+int run_built_in_command(char **av, UNUSED char *line_buffer)
 {
-	int cmd_status, success = 0;/* should be change to 1 for success */
+	int success = 0;/* cmd_status should be change to 1 for success */
 
 	if (_strcmp(av[0], "exit") == 0)
 		shell_exit(av);
@@ -74,11 +74,11 @@ int run_built_in_command(char **av, char *line_buffer)
  * @argv: program argument vector
  * Return: exit status code of child process
  */
-int run_sys_cmd(char **av, int n, char **argv)
+int run_sys_cmd(char **av, int n __attribute__((unused)), char **argv)
 {
 	char *prog_path;
-	int child_pid, child_status = -1, j;
-	struct stat st;
+	int child_pid, child_status = -1;
+	/*struct stat st;*/
 
 	prog_path = parse_path(av[0]);
 	if (prog_path == NULL)

@@ -108,10 +108,10 @@ int _setenv(char *variable, char *value)
 
 int _putenv(char *str)
 {
-	size_t len, key_len, value_len, environ_len, i;
+	size_t len, key_len, environ_len, i;
 	const char *sep;
 	char *copy;
-	char **new_environ, **ep;
+	char **new_environ;
 	int found;
 	/* Invalid argument or missing '=' character */
 	if (str == NULL || str[0] == '\0' || strchr(str, '=') == NULL)
@@ -126,7 +126,7 @@ int _putenv(char *str)
 	}
 	/* Calculate the length of the key and value */
 	key_len = sep - str;
-	value_len = len - key_len - 1;
+	/*value_len = len - key_len - 1;*/
 	/* Create a copy of the input string*/
 	copy = malloc((len + 1) * sizeof(char));
 	if (copy == NULL)
@@ -139,7 +139,6 @@ int _putenv(char *str)
 	new_environ = NULL;
 	found = 0;
 	environ_len = _get_env_len();
-	ep;
 
 	/* Allocate memory for the updated environment */
 	new_environ = malloc((environ_len + 2) * sizeof(char *));
@@ -185,7 +184,7 @@ int _putenv(char *str)
  *        successive entries back one element.
  */
 
-int _unsetenv(char *variable)
+int _unsetenv(char *variable __attribute__((unused)))
 {
 	/* your code here */
 	return (0);

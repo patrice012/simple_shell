@@ -9,12 +9,12 @@ void sig_handler(int sig);
  * Return: always 0
  */
 
-int main(int argc, char **argv)
+int main(int argc __attribute__((unused)), char **argv)
 {
 	char *line_buffer = NULL;
 	size_t len = 0;
 	ssize_t read;
-	int status, fd = STDIN_FILENO;
+	int fd = STDIN_FILENO; /* set status */
 
 	signal(SIGINT, sig_handler);
 
