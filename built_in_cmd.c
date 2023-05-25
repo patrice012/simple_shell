@@ -145,7 +145,6 @@ int _putenv(char *str, char **envp)
 		/* The variable doesn't exist, add it to the environment */
 		new_environ[environ_len] = copy;
 		new_environ[environ_len + 1] = NULL;
-		printf("new_environ: %s\n", new_environ[environ_len]);
 		envp = new_environ;
 	}
 	else
