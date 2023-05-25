@@ -42,12 +42,15 @@ int main(int argc, char **argv)
 			shell_prompt();
 		/* read user input into line_buffer */
 		read = _getline(&line_buffer, &len, stdin);
+		printf("buffer: %s read:%ld\n", line_buffer, read);
 		if (read == -1)
 			break;
 		/* check if the first character is not Null-terminate */
 		/*if (line_buffer[0] != '\0')*/
 			/* run cmd */
 		run_cmd(line_buffer, argv);
+		if (!isatty(fd)) /* non-interactive */
+			return (0);
 	}
 		if (fd != STDIN_FILENO)
 			close(fd);
