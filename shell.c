@@ -1,26 +1,24 @@
 #include "header.h"
 
 void sig_handler(int sig);
-
-int status_code;
-char *program_name;
+char **envp;
 
 /**
  * main - main function
  * @argc: number of arguments passed to main
  * @argv: array of arguments passed to main
+ * @envp: array of environment variables
  * Return: always 0
  */
 
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **envp)
 {
 	char *line_buffer = NULL;
 	size_t len = 0;
 	ssize_t read;
-	int fd = STDIN_FILENO; /* set status */
+	int fd = STDIN_FILENO, status_code; /* set status */
 
 	signal(SIGINT, sig_handler);
-	program_name = argv[0];
 
 	if (argc > 1)
 	{
@@ -31,9 +29,9 @@ int main(int argc, char **argv)
 
 	(void)argv;
 	(void)argc;
-	if (setup_env() == -1)
+	if (setup_env(envp) == -1)
 	{
-		free_env();
+		free_env(envp);
 		return (-1);
 	}
 
@@ -44,13 +42,12 @@ int main(int argc, char **argv)
 			shell_prompt();
 		/* read user input into line_buffer */
 		read = _getline(&line_buffer, &len, stdin);
-		printf("buffer: %s read:%ld\n", line_buffer, read);
 		if (read == -1)
 			break;
 		/* check if the first character is not Null-terminate */
 		/*if (line_buffer[0] != '\0')*/
 			/* run cmd */
-		run_cmd(line_buffer, argv);
+		run_cmd(line_buffer, argv, envp);
 		if (!isatty(fd)) /* non-interactive */
 			break;
 	}
@@ -61,9 +58,8 @@ int main(int argc, char **argv)
 			print_str("\n");
 
 	/* cleaning the environment and all pointers */
-	free_env();
+	free_env(envp);
 	free(line_buffer);
-	program_name = NULL;
 	return (status_code);
 }
 
@@ -80,7 +76,7 @@ void shell_prompt(void)
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		perror("getcwd() error");
 
-	format = format_tilde(cwd);
+	format = format_tilde(cwd, envp);
 	if (format != NULL)
 		_strcpy(cwd, format);
 	print_str(cwd);

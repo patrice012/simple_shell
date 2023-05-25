@@ -16,15 +16,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
-/* macros */
 
-/*
- * #define MAX_TOKENS 50
- * #define MAX_COMMAND_LENGTH 100
- * #define MAX_PATH_LENGTH 1024
- * #define MAX_ARGUMENTS 10
- * #define MAX_FILENAME_LEN 256
- */
 
 #define UNUSED __attribute__((unused))
 #define MAX_ARGS_COUNT 1000
@@ -34,21 +26,18 @@
 #define BUFFER_SIZE 100
 
 
-extern char **environ;
-extern int status_code;
-extern char *program_name;
+/*extern char **environ;*/
 
 
 
 /* functions prototypes */
-
 void create_abs_path(char *directory, char *filename, char *absolute_path);
 char *_exec_file(char *path);
-int run_built_in_command(char **av, char *line_buffer);
+int run_built_in_command(char **av, char *line_buffer, char **envp);
 
 void shell_prompt(void);
-void run_cmd(char *line_buffer, char **argv);
-int run_sys_cmd(char **av, int n, char **argv);
+void run_cmd(char *line_buffer, char **argv, char **envp);
+int run_sys_cmd(char **av, char **argv, char **envp);
 void sig_handler(int sig);
 
 
@@ -58,12 +47,12 @@ void sig_handler(int sig);
 
 /* build-in commands */
 void shell_exit(char **av);
-void shell_env(void);
-int _unsetenv(char *variable);
-int _setenv(char *variable, char *value);
-char *format_tilde(char *str);
-int change_dir(char *dir);
-int alias(char **tokens);
+void shell_env(char **envp);
+int _unsetenv(char *variable, char **envp);
+int _setenv(char *variable, char *value, char **envp);
+char *format_tilde(char *str, char **envp);
+int change_dir(char *dir, char **envp);
+int alias(char **tokens, char **envp);
 /* end */
 
 /* parser functions */
@@ -87,20 +76,20 @@ char *_substr(char *src, int m, int n);
 int _atoi(char *str);
 int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, size_t n);
-char *_get_env(char *arg);
-int _is_env_variable(char *name);
-int _get_env_len(void);
+char *_get_env(char *arg, char **envp);
+int _is_env_variable(char *name, char **envp);
+int _get_env_len(char **envp);
 void _format(char *str1, char *str2, char *save, char *delim);
 int process_file(char *file, int *fd);
-int setup_env(void);
+int setup_env(char **envp);
 /* end*/
 
-int print_alias(char *name);
-int set_alias(char *new_value);
+int print_alias(char *name, char **envp);
+int set_alias(char *new_value, char **envp);
 
 
 /* deallocate memory functions */
-void free_env(void);
+void free_env(char **envp);
 void free_pointer(char *str, ...);
 void free_array(char **av);
 

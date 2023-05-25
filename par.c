@@ -53,51 +53,6 @@ int parse_cmd(char *cmd, char **argv)
 
 
 /**
- * __parse_path - extracts existing paths holding
- *				the command
- *
- * @cmd: the command
- *
- * Return: pointer to strings of the right paths
- */
-char *__parse_path(char *cmd)
-{
-	int i = 0, k = 0, j, len;
-	char *value = _get_env("PATH"), *path;
-	struct stat st;
-
-	if (value == NULL)
-	{
-		/*free(path);*/
-		return (strdup(cmd));
-	}
-
-	len = _strlen(cmd);
-
-	while (value[i] != '\0')
-	{
-		while (value[i] != ':' && value[i] != '\0')
-			i++;
-		path = _realloc(path, sizeof(char) * _strlen(path), i - k + len + 2);
-
-		strncpy(path, value + k, (j = i - k));
-		path[j++] = '/';
-		strncpy(path + j, cmd, i - k + len + 2);
-
-		if (stat(path, &st) == 0)
-			return (path);
-
-		if (value[i] == '\0')
-			break;
-
-		k = ++i;
-	}
-
-	/*free(path);*/
-	return (_strdup(cmd));
-}
-
-/**
  * split_cmds - spilts the buffer containing commands into two strings
  *
  * @buffer: a string that contains the commands

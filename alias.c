@@ -1,23 +1,23 @@
 #include "header.h"
 
-void update_alias_env(char *new_alias, char *new_value, int update_env);
+void update_alias_env(char *alias, char *val, int new_env, char **envp);
 char *setup_alias(char *alias, int len);
 
 /**
  * print_alias - prints alias(es) from environ
  *
  * @name: the alias name to print it's value
- *
+ * @envp: env variable
  * Note: if name is null, the function prints all aliases
  *
  * Return: 0 on sucess, 2 on failure
  */
-int print_alias(char *name)
+int print_alias(char *name, char **envp)
 {
 	int i, len;
 	char *alias_env, *alias_value;
 
-	alias_env = _get_env("alias");
+	alias_env = _get_env("alias", envp);
 	if (alias_env == NULL)
 		return (2);
 
@@ -63,10 +63,10 @@ int print_alias(char *name)
  * set_alias - add a new alias or overwrite existing value
  *
  * @new_value: the new alias to set
- *
+ * @envp: env variable
  * Return: 0 on sucess, 2 on failure
  */
-int set_alias(char *new_value)
+int set_alias(char *new_value, char **envp)
 {
 	int i, name_len, alias_env_len;
 	char *alias_value, *alias_env, *new_alias;
@@ -80,12 +80,12 @@ int set_alias(char *new_value)
 	name_len = _strchr(new_value, '=') - new_value;
 	new_value = setup_alias(new_value, name_len);
 
-	alias_env = _get_env("alias");
+	alias_env = _get_env("alias", envp);
 	if (alias_env == NULL)
 	{
 		new_alias = (char *)malloc(sizeof(char) * _strlen(new_value) + 2);
 		new_alias[0] = '\0';
-		update_alias_env(new_alias, new_value, 1);
+		update_alias_env(new_alias, new_value, 1, envp);
 		free(new_alias);
 		free(new_value);
 		return (2);
@@ -110,13 +110,13 @@ int set_alias(char *new_value)
 				_strncmp(alias_value, new_value, name_len) != 0)
 			{
 				alias_env[i] = '\0';
-				update_alias_env(new_alias, alias_value, 0);
+				update_alias_env(new_alias, alias_value, 0, envp);
 				alias_env[i] = ':';
 			}
 			alias_value = alias_env + i + 1;
 		}
 
-	update_alias_env(new_alias, new_value, 1);
+	update_alias_env(new_alias, new_value, 1, envp);
 	free(new_alias);
 	free(new_value);
 	return (0);
@@ -125,21 +125,21 @@ int set_alias(char *new_value)
 /**
  * update_alias_env - appends new_alias to alias_env
  *
- * @new_alias: current alias env value
- * @new_value: string - the new alias to append
- * @update_env: boolean - if true update environ with the new alias
- *
+ * @n_alias: current alias env value
+ * @n_val: string - the new alias to append
+ * @_env: boolean - if true update environ with the new alias
+ * @envp: env variable
  * Note: this is a helper function for set_alias
  */
-void update_alias_env(char *new_alias, char *new_value, int update_env)
+void update_alias_env(char *n_alias, char *n_val, int _env, char **envp)
 {
-	_strcat(new_alias, new_value);
+	_strcat(n_alias, n_val);
 
-	if (new_value[0] != '\0')
-		_strcat(new_alias, ":");
+	if (n_val[0] != '\0')
+		_strcat(n_alias, ":");
 
-	if (update_env)
-		_setenv("alias", new_alias);
+	if (_env)
+		_setenv("alias", n_alias, envp);
 }
 
 /**

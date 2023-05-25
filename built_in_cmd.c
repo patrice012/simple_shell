@@ -1,6 +1,6 @@
 #include "header.h"
 
-int _putenv(char *str);
+int _putenv(char *str, char **envp);
 
 /**
  * shell_exit - Implement the exit built-in, that exits the shell
@@ -28,6 +28,7 @@ void shell_exit(char **av)
 
 /**
  * shell_env - display the current environment variables in a shell.
+ * @envp: env variables
  * Return: None
  */
 
@@ -36,13 +37,13 @@ void shell_exit(char **av)
  */
 
 
-void shell_env(void)
+void shell_env(char **envp)
 {
 	int i = 0;
 
-	while (environ[i] != NULL)
+	while (envp[i] != NULL)
 	{
-		print_str(environ[i]);
+		print_str(envp[i]);
 		print_str("\n");
 		i++;
 	}
@@ -54,7 +55,7 @@ void shell_env(void)
  * creates a new one if it doesn't exist.
  * @variable: The var_name of the environment variable.
  * @value: The value to be assigned to the environment variable.
- *
+ * @envp: env variable
  * Return: Returns 0 on success or -1 on failure.
  */
 
@@ -62,7 +63,7 @@ void shell_env(void)
  * Usage: setenv VARIABLE VALUE
  */
 
-int _setenv(char *variable, char *value)
+int _setenv(char *variable, char *value, char **envp)
 {
 	int result;
 	char *env;
@@ -85,7 +86,7 @@ int _setenv(char *variable, char *value)
 
 	/* format: variable=value */
 	_format(variable, value, env, "=");
-	result = _putenv(env);
+	result = _putenv(env, envp);
 
 	if (result != 0)
 	{
@@ -99,7 +100,7 @@ int _setenv(char *variable, char *value)
 /**
  * _putenv - Sets the variable of an environment
  * @str: The var_name of the environment variable.
- *
+ * @envp: env variable
  * Return: Returns 0 on success or -1 on failure.
  */
 
@@ -107,7 +108,7 @@ int _setenv(char *variable, char *value)
  * Usage: setenv VARIABLE VALUE
  */
 
-int _putenv(char *str)
+int _putenv(char *str, char **envp)
 {
 	size_t len, key_len, environ_len, i;
 	const char *sep;
@@ -122,7 +123,7 @@ int _putenv(char *str)
 	if (copy == NULL)
 		return (-1);
 	_strcpy(copy, str);
-	new_environ = NULL, found = 0, environ_len = _get_env_len();
+	new_environ = NULL, found = 0, environ_len = _get_env_len(envp);
 	new_environ = malloc((environ_len + 2) * sizeof(char *));
 	if (new_environ == NULL)
 	{
@@ -131,11 +132,11 @@ int _putenv(char *str)
 	}
 	for (i = 0; i < environ_len; i++)
 	{
-		new_environ[i] = environ[i];
-		if (_strncmp(environ[i], str, key_len) == 0 && environ[i][key_len] == '=')
+		new_environ[i] = envp[i];
+		if (_strncmp(envp[i], str, key_len) == 0 && envp[i][key_len] == '=')
 		{
-			free(environ[i]);
-			environ[i] = copy;
+			free(envp[i]);
+			envp[i] = copy;
 			found = 1;
 		}
 	}
@@ -144,7 +145,8 @@ int _putenv(char *str)
 		/* The variable doesn't exist, add it to the environment */
 		new_environ[environ_len] = copy;
 		new_environ[environ_len + 1] = NULL;
-		environ = new_environ;
+		printf("new_environ: %s\n", new_environ[environ_len]);
+		envp = new_environ;
 	}
 	else
 		free(new_environ);
@@ -156,7 +158,7 @@ int _putenv(char *str)
  * _unsetenv - unsets an environmental variable
  *
  * @variable: var_name of variable to be unset.
- *
+ * @envp: env variables
  * Return: 0 on success, -1 on fail
  *
  * note: the algorithm unsets by shifting all
@@ -164,7 +166,7 @@ int _putenv(char *str)
  */
 
 
-int _unsetenv(char *variable)
+int _unsetenv(char *variable, char **envp)
 {
 	int len;
 	char **ep, **sp;
@@ -177,7 +179,7 @@ int _unsetenv(char *variable)
 
 	len = _strlen(variable);
 
-	for (ep = environ; *ep;)
+	for (ep = envp; *ep;)
 	{
 		if (_strncmp(variable, *ep, len) == 0 && (*ep)[len] == '=')
 		{
