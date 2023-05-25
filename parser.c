@@ -1,7 +1,7 @@
 #include "header.h"
 
 /**
- * parse_cmd - Parses a command string and populates an array of arguments.
+ * __parse_cmd - Parses a command string and populates an array of arguments.
  * The `parse_cmd` function tokenizes the command string `cmd` based on
  * spaces, tabs, and newlines. It stores the extracted arguments in the
  * `argv` array, which is passed as a parameter
@@ -31,7 +31,7 @@
  * argv[2] = "world"
  */
 
-int parse_cmd(char *cmd, char **argv)
+int __parse_cmd(char *cmd, char **argv)
 {
 	int argc = 0; /* Number of arguments */
 	char *arg = NULL; /* Current argument */
@@ -85,6 +85,9 @@ char *parse_path(char *cmd)
 	char *path_copy = strdup(path);
 	char *token, *abs_path;
 	struct stat st;
+
+	if (cmd == NULL)
+		return (NULL);
 
 	if (path_copy == NULL)
 		return (strdup(cmd));

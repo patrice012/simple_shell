@@ -65,10 +65,10 @@ void *_realloc(char *ptr, size_t old_size, size_t new_size)
 	int size = 0;
 
 	if (ptr == NULL)
-		return ((char *)malloc(new_size));
+		return (malloc(new_size));
 	else if (new_size == old_size)
 		return (ptr);
-	else if (ptr != NULL && new_size == 0)
+	else if (new_size == 0)
 	{
 		free(ptr);
 		return (NULL);
