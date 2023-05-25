@@ -76,5 +76,4 @@ void free_array(char **av)
 		free(av[i]);
 		i++;
 	}
-	free(av);
 }

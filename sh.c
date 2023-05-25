@@ -8,7 +8,7 @@
  */
 void run_cmd(char *line_buffer, char **argv)
 {
-	int n, j, cmd_status;
+	int n, cmd_status;
 	char *av[MAX_ARGS_COUNT + 1], *cmd, *rest, sep;
 
 	rest = line_buffer;
@@ -27,8 +27,6 @@ void run_cmd(char *line_buffer, char **argv)
 			cmd_status = run_sys_cmd(av, n, argv);
 		if (cmd_status == -1)
 			break;
-		for (j = 0; j < n; j++)
-			free(av[j]);
 		status_code = cmd_status;
 		if (sep == '|' && cmd_status == 0)
 			break;
@@ -38,6 +36,7 @@ void run_cmd(char *line_buffer, char **argv)
 			break;
 		cmd = NULL;
 	}
+	free_array(av);
 }
 
 

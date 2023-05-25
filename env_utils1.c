@@ -7,16 +7,15 @@
  */
 int setup_env(void)
 {
-	int env_cnt, var_cnt, i;
+	int env_cnt, var_cnt, i, j = 0;
 	char **new_environ;
 
 	env_cnt = _get_env_len();
 
 	new_environ = malloc(sizeof(char *) * (env_cnt + 1));
-
 	if (new_environ == NULL)
 	{
-		free_array(new_environ);
+		free(new_environ);
 		return (-1);
 	}
 
@@ -31,13 +30,19 @@ int setup_env(void)
 
 		if (new_environ[i] == NULL)
 		{
-			free_array(new_environ);
 			free_env();
 			return (-1);
 		}
 	}
-	new_environ[i] = NULL;
-	environ = new_environ;
-	free_array(new_environ);
+	j = 0;
+	while (new_environ[j] != NULL)
+	{
+		environ[j] = strdup(new_environ[j]);
+		j++;
+	}
+	environ[j] = NULL;
+	for (j = 0; new_environ[j] != NULL; j++)
+		free(new_environ[j]);
+	free(new_environ);
 	return (0);
 }

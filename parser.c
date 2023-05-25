@@ -110,11 +110,10 @@ char *parse_path(char *cmd)
 			return (abs_path);
 		}
 		/*free(abs_path);*/
-		/*free_pointer(abs_path, NULL);*/
 		free(abs_path);
 		token = strtok(NULL, ":");
 	}
-	free(abs_path), free(path_copy), free(token);
+	free(path_copy), free(token);
 	/* check if command itself is a file_path that exists */
 	if (stat(cmd, &st) == 0)
 		return (cmd);

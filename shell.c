@@ -31,9 +31,11 @@ int main(int argc, char **argv)
 
 	(void)argv;
 	(void)argc;
-	free_array(argv);
-	if (setup_env())
+	if (setup_env() == -1)
+	{
+		free_env();
 		return (-1);
+	}
 
 	while (1)
 	{
@@ -60,7 +62,7 @@ int main(int argc, char **argv)
 
 	/* cleaning the environment and all pointers */
 	free_env();
-	free_pointer(line_buffer, NULL);
+	free(line_buffer);
 	program_name = NULL;
 	return (status_code);
 }

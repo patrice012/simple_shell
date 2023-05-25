@@ -90,8 +90,7 @@ int _strncmp(char *s1, char *s2, size_t n);
 char *_get_env(char *arg);
 int _is_env_variable(char *name);
 int _get_env_len(void);
-void _format(char *first_char, char *second_char, char *save_char, char *delim)
-;
+void _format(char *str1, char *str2, char *save, char *delim);
 int process_file(char *file, int *fd);
 int setup_env(void);
 /* end*/
