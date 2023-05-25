@@ -1,15 +1,5 @@
 #include "header.h"
 
-/**
- * __parse_cmd - Parses a command string and populates an array of arguments.
- * The `parse_cmd` function tokenizes the command string `cmd` based on
- * spaces, tabs, and newlines. It stores the extracted arguments in the
- * `argv` array, which is passed as a parameter
- * @cmd: The command string to parse.
- * @argv: The array of arguments to populate.
- * Return: The number of arguments parsed.
- */
-
 
 /*
  * Test output
@@ -31,33 +21,117 @@
  * argv[2] = "world"
  */
 
-int __parse_cmd(char *cmd, char **argv)
+
+/**
+ * parse_cmd - extracts the command and arguments
+ *
+ * @cmd: pointer to a string
+ * @argv: array of pointers to strings
+ *
+ * Return: number of tokens
+ */
+int parse_cmd(char *cmd, char **argv)
 {
-	int argc = 0; /* Number of arguments */
-	char *arg = NULL; /* Current argument */
-	char *cmd_copy = NULL; /* copy of the command */
-	/* dynamique allocation and copy cmd into cmd_copy */
-	cmd_copy = (char *)malloc(sizeof(char) * _strlen(cmd));
-	if (cmd_copy == NULL)
-	{
-		perror("tsh: memory allocation error");
-		return (-1);
-	}
-	_strcpy(cmd_copy, cmd);
-	arg = strtok(cmd_copy, " \t\n"); /* Get the first argument */
+	int argc = 0, i = 0, len = 0, empty_str = 0;
+	char c, *arg, quote = '\0';
 
-	while (arg != NULL)
+	arg = malloc(sizeof(char) * (_strlen(cmd) + 1));
+	for (i = 0; (c = cmd[i]) != '\0'; i++)
 	{
-		argv[argc] = _strdup(arg); /* Add argument to array */
-		argc++;
-		arg = strtok(NULL, " \t\n"); /* Get the next argument */
+		if ((c == '\'' || c == '\"'))
+		{
+			if (!quote)
+				quote = c;
+			else if (quote == c)
+				quote = '\0', empty_str = 1;
+		}
+		else if ((c == ' ' || c == '\n' || c == '\t') && !quote)
+		{
+			if (len || empty_str)
+			{
+				arg[len] = '\0';
+				argv[argc++] = _strdup(arg);
+				len = 0, empty_str = 0;
+			}
+		}
+		else
+		{
+			if (c == '\\' && cmd[i + 1] != '\0')
+				c = cmd[++i];
+			arg[len++] = c;
+			empty_str = 0;
+		}
 	}
-	argv[argc] = NULL; /* Set the last element of the array to NULL */
+	if (len || empty_str)
+	{
+		arg[len] = '\0';
+		argv[argc++] = _strdup(arg);
+	}
 
-	/* need to free cmd_copy and arg */
-	free_pointer(cmd_copy, arg, NULL);
-	return (argc); /* Return the number of arguments */
+	argv[argc] = NULL;
+	free(arg);
+	return (argc);
 }
+
+
+/**
+ * split_cmds - spilts the buffer containing commands into two strings
+ *
+ * @buffer: a string that contains the commands
+ * @separator: the separator that should be used to split the buffer
+ * @cmd: a pointer to the first command
+ * @rest: a pointer to the rest of the string
+ *
+ * Note: this function separates the BUFFER by ';', '||' or '&&'
+ * and sets SEPARATOR char to the one found then it assigns the
+ * first half (first command) to CMD pointer
+ * and assigns the rest of the string to REST pointer.
+ *
+ * If no SEPARATOR can be found in BUFFER, the fucntion assigns the
+ * whole BUFFER into CMD and REST is pointing to NULL
+ */
+void split_cmds(char *buffer, UNUSED char *separator, char **cmd, char **rest)
+{
+	int i;
+	char quote = '\0';
+
+	*cmd = buffer;
+	*separator = '\0';
+	*rest = NULL;
+
+	for (i = 0; buffer[i] != '\0'; i++)
+	{
+		if (buffer[i] == '\'' || buffer[i] == '\"')
+		{
+			if (!quote)
+				quote = buffer[i];
+			else if (quote == buffer[i])
+				quote = '\0';
+		}
+
+		if (!((buffer[i] == ';' || _strncmp(buffer + i, "||", 2) == 0 ||
+			_strncmp(buffer + i, "&&", 2) == 0 || buffer[i] == '#') && !quote))
+			continue;
+
+		if (buffer[i] == '#' && i > 0 && buffer[i - 1] != ' ')
+			continue;
+
+		*separator = buffer[i];
+		*rest = buffer + i + 1;
+
+		if ((_strncmp(buffer + i, "||", 2) == 0 ||
+					_strncmp(buffer + i, "&&", 2) == 0))
+		{
+			buffer[i + 1] = ' ';
+			*rest += 1;
+		}
+		buffer[i] = '\0';
+
+		break;
+	}
+}
+
+
 
 /**
  * parse_path - Parse the PATH environment variable to find the executable path
