@@ -16,7 +16,7 @@ int setup_env(void)
 
 	if (new_environ == NULL)
 	{
-		free(new_environ);
+		free_array(new_environ);
 		return (-1);
 	}
 
@@ -31,14 +31,13 @@ int setup_env(void)
 
 		if (new_environ[i] == NULL)
 		{
+			free_array(new_environ);
 			free_env();
 			return (-1);
 		}
 	}
-
 	new_environ[i] = NULL;
-
 	environ = new_environ;
-
+	free_array(new_environ);
 	return (0);
 }

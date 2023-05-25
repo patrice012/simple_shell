@@ -29,11 +29,11 @@ int main(int argc, char **argv)
 			return (status_code);
 	}
 
-	if (setup_env())
-		return (-1);
-
 	(void)argv;
 	(void)argc;
+	free_array(argv);
+	if (setup_env())
+		return (-1);
 
 	while (1)
 	{

@@ -82,16 +82,14 @@ char *parse_path(char *cmd)
 {
 	char *path = getenv("PATH"); /* _getenv */
 	/* copy the path value*/
-	char *path_copy = strdup(path);
-	char *token, *abs_path;
+	char *path_copy = strdup(path), *token, *abs_path;
 	struct stat st;
 
 	if (cmd == NULL)
 	{
-		free_pointer(path_copy, NULL);
+		free(path_copy);
 		return (NULL);
 	}
-
 	if (path_copy == NULL)
 		return (strdup(cmd));
 	token = strtok(path_copy, ":");
@@ -108,7 +106,7 @@ char *parse_path(char *cmd)
 		if (access(abs_path, X_OK) == 0)
 		{
 			token = NULL;
-			free_pointer(path_copy, NULL);
+			free(path_copy);
 			return (abs_path);
 		}
 		/*free(abs_path);*/
@@ -116,11 +114,9 @@ char *parse_path(char *cmd)
 		free(abs_path);
 		token = strtok(NULL, ":");
 	}
-	/*free_pointer(path_copy, token, abs_path, NULL);*/
+	free(abs_path), free(path_copy), free(token);
 	/* check if command itself is a file_path that exists */
 	if (stat(cmd, &st) == 0)
 		return (cmd);
-	free(path_copy);
-	free(token);
 	return (NULL);
 }
