@@ -1,26 +1,22 @@
 #include "header.h"
 
-
 /**
  * _is_env_variable - check if variable is an environement varaible
  * @var_name: varable name
- * @envp: env variables
  * Return: index of the varaible if exist and -1 if not
  */
 
-int _is_env_variable(char *var_name, char **envp)
+int _is_env_variable(char *var_name)
 {
 	int index = 0, len = 0;
 
-	if (!var_name || !envp)
+	if (!var_name || !environ)
 		return (-1);
-
 	len = _strlen(var_name);
-
-	while (envp[index])
+	while (environ[index])
 	{
 		/* compare len=n characters of each element in array to name */
-		if (_strncmp(envp[index], var_name, len) == 0)
+		if (_strncmp(environ[index], var_name, len) == 0)
 			return (index);
 		index++;
 	}
@@ -31,19 +27,19 @@ int _is_env_variable(char *var_name, char **envp)
 /**
  * _get_env - Gets an environmental variable value if exist.
  * @arg: the name of the environmental variable.
- * @envp: env variable
+ *
  * Return: Null if environmental variable doesnt exist.
  *         Otherwise, value of environmental variable.
  */
 
-char *_get_env(char *arg, char **envp)
+char *_get_env(char *arg)
 {
 	int len, index;
 
-	if (arg == NULL || envp == NULL)
+	if (arg == NULL || environ == NULL)
 		return (NULL);
 	len = _strlen(arg);
-	index = _is_env_variable(arg, envp);
+	index = _is_env_variable(arg);
 
 	if (index == -1)
 		return (NULL);
@@ -54,44 +50,55 @@ char *_get_env(char *arg, char **envp)
 	 *this value is also of type char *str so str[len] give access
 	 *to the element that follow the str => environ[index][len]
 	 */
-	if (envp[index][len] == '=')
+	if (environ[index][len] == '=')
 	{
 		/*
 		 * return pointer to the first byte after =
 		 * environ[index] + len + 1 calculates a new memory address
-		 * by moving the pointer len + 1 elements forward.
+		 * by moving the pointer len + 1 elements forward
+		 * after environ[index] first byte
 		 */
-		return (envp[index] + len + 1);
+		return (environ[index] + len + 1);
 	}
 	return (NULL);
 }
 
 
-/**
- * free_env - frees the memory that the environment copy
- * @envp: env variables
- * takes.
- */
-void free_env(char **envp)
-{
-	free_array(envp);
-}
-
 
 /**
  * _get_env_len - gets the number of variables
  *              inside an environment.
- * @envp: env variables
  * Return: number of variables.
  */
-int _get_env_len(char **envp)
+int _get_env_len(void)
 {
 	int count = 0;
 
-	while (envp[count] != NULL)
+	while (environ[count] != NULL)
 		count++;
 	return (count);
 }
 
 
 
+/**
+ * _getenv - Get the value of an environment variable
+ * @name: Name of the environment variable
+ *
+ * Return: Value of the environment variable, or NULL if it doesn't exist
+ */
+char *_getenv(const char *name)
+{
+	char **env;
+	size_t name_len = _strlen(name);
+
+	for (env = environ; *env != NULL; env++)
+	{
+		if (_strncmp(*env, name, name_len) == 0 && (*env)[name_len] == '=')
+		{
+			return (&(*env)[name_len + 1]);
+		}
+	}
+
+	return (NULL);
+}

@@ -1,39 +1,42 @@
 #include "header.h"
 
+
 /**
- * _print - write string to file descriptor
- * @str: string to print
- * @fd: file descriptor
- * Return: None
+ * _puterror - Prints an error message to the standard error stream
+ * @err: The error message to print
+ *
+ * Return: Void
  */
-
-void _print(char *str, int fd)
+void _puterror(char *err)
 {
-	int len = 0;
-
-	len = _strlen(str);
-	write(fd, str, len);
+	if ((_write_stderr(err)) == -1)
+	{
+		perror("write");
+	}
 }
 
 /**
- * print_str - print string to stdout
- * @str: string to write
- * Return: None
+ *_putchar - writes the character c to stdout
+ * @c: The character to print
+ * Return: On success 1.
+ * On error, -1 is returned, and errno is set appropriately.
  */
-
-void print_str(char *str)
+int _putchar(char c)
 {
-	_print(str, STDOUT_FILENO);
+	return (write(1, &c, 1));
 }
-
 
 /**
- * print_error - print string to stderror
- * @str: error message to write
- * Return: None
+ * _puts - Prints a string to the standard output stream
+ * @str: The string to print
+ *
+ * Return: Void
  */
-
-void print_error(char *str)
+void _puts(char *str)
 {
-	_print(str, STDERR_FILENO);
+	if ((_write_stdout(str)) == -1)
+	{
+		perror("write");
+	}
 }
+

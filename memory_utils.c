@@ -1,91 +1,98 @@
 #include "header.h"
 
 
+
 /**
- * _memcpy - function copies n bytes from memory area src to memory area dest.
- * @dest: destination
- * @src: source pointer
- * @n: number of bytes to copy
- * Return: None
+ **_memset - fills memory with a constant byte
+ *@s: the pointer to the memory area
+ *@b: the byte to fill *s with
+ *@n: the amount of bytes to be filled
+ *Return: (s) a pointer to the memory area s
  */
-
-
-/*
- * Usage: _memcpy(ptr1, ptr2, 20) => copy 20 bytes of ptr2 into ptr1
- */
-
-void *_memcpy(void *dest, const void *src, size_t n)
+char *_memset(char *s, char b, unsigned int n)
 {
-	size_t i;
-	/*
-	 * copy_dest holds the address of dest, not its value.
-	 * When dest (or src) is passed as an argument to the function,
-	 * it is implicitly converted to a void* type,
-	 * which is a generic pointer
-	 *type that can hold the address of any data type.
-	 */
-	char *copy_dest = (char *)dest;
-	char *copy_src = (char *)src;
-	/*
-	 * By casting dest to char* and assigning it to copy_dest,
-	 * we create a new pointer copy_dest
-	 * that points to the same address as dest.
-	 * This allows us to treat the memory
-	 * at that address as a sequence of characters
-	 * (char type) and perform byte-wise operations
-	 * so copy_dest a pointer variable
-	 * that holds the memory address of dest and
-	 *copy_dest refers to the value stored at that address.
-	 */
-
-	if (dest == NULL || src == NULL)
-		return (NULL);
+	unsigned int i;
 
 	for (i = 0; i < n; i++)
-		copy_dest[i] = copy_src[i];
-	/* copy_dest[i] = copy_src[i] <==> *(copy_dest + i) = *(copy_src + i); */
+		s[i] = b;
+	return (s);
+}
+
+/**
+ * _memcpy - function that copies memory area
+ *
+ * @dest: buffer where we will copy to
+ * @src: what we are to copy
+ * @n: n bytes of @src
+ *
+ * Return: Always 0 (Success)
+*/
+
+char *_memcpy(char *dest, char *src, unsigned int n)
+{
+	unsigned int i;
+
+	for (i = 0; i < n; i++)
+		dest[i] = src[i];
 	return (dest);
 }
 
-
 /**
  * _realloc - reallocates a block of memory
- *
- * @ptr: pointer to malloc'ated block
- * @old_size: byte size of current block
+ * @ptr: pointer to previous malloc'ated block
+ * @old_size: byte size of previous block
  * @new_size: byte size of new block
  *
- * Return: pointer to the new memory block.
+ * Return: pointer to da ol'block nameen.
  */
-
-void *_realloc(char *ptr, size_t old_size, size_t new_size)
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 {
-	char *copy_ptr = (char *)ptr;
-	char *temp = NULL;
-	int size = 0;
+	char *p;
 
-	if (ptr == NULL)
+	if (!ptr)
 		return (malloc(new_size));
-	else if (new_size == old_size)
+	if (!new_size)
+		return (free(ptr), NULL);
+	if (new_size == old_size)
 		return (ptr);
-	else if (new_size == 0)
-	{
-		free(ptr);
+
+	p = malloc(new_size);
+	if (!p)
 		return (NULL);
-	}
-	else
-	{
-		/* create temporary storage */
-		temp = (char *)malloc(new_size);
-		if (temp == NULL)
-			return (NULL);
-		/* copy n bytes from ptr = copy_ptr into temp */
-		size = old_size > new_size ? old_size : new_size;
-		_memcpy(temp, copy_ptr, size);
-		/* free pointer */
-		free(ptr);
-		copy_ptr = NULL, ptr = NULL;
-		/* return the new pointer with the new size */
-		return (temp);
-	}
+
+	old_size = old_size < new_size ? old_size : new_size;
+	while (old_size--)
+		p[old_size] = ((char *)ptr)[old_size];
+	free(ptr);
+	return (p);
+}
+
+/**
+ * _calloc - a function that allocates
+ *           memory for an array using malloc
+ *
+ *           It is basically the equivalent to
+ *           malloc followed by memset
+ *
+ * @nmemb: size of array
+ * @size: size of each element
+ *
+ * Return: pointer with new allocated memory
+ *         or NULL if it fails
+*/
+
+void *_calloc(unsigned int nmemb, unsigned int size)
+{
+	char *p;
+
+	if (nmemb == 0 || size == 0)
+		return (NULL);
+
+	p = malloc(nmemb * size);
+	if (p == NULL)
+		return (NULL);
+
+	_memset(p, 0, nmemb * size);
+
+	return (p);
 }

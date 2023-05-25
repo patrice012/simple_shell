@@ -1,5 +1,7 @@
 #include "header.h"
 
+void _format(char *str1, char *str2, char *save, char *delim);
+
 /**
   * create_abs_path - create an absolute path
   * @directory: path to the directory
@@ -26,7 +28,6 @@ void _format(char *first_char, char *second_char, char *save_char, char *delim)
 	_strcpy(save_char, first_char);
 	_strcat(save_char, delim);
 	_strcat(save_char, second_char);
-	_strcat(save_char, "\0");
 }
 
 
@@ -76,4 +77,5 @@ void free_array(char **av)
 		free(av[i]);
 		i++;
 	}
+	free(av);
 }
