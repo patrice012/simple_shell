@@ -1,13 +1,13 @@
 #include "header.h"
 
 /**
-  * create_absolute_path - create an absolute path
+  * create_abs_path - create an absolute path
   * @directory: path to the directory
   * @filename: filename
   * @absolute_path: the output path
   */
 
-void create_absolute_path(char *directory, char *filename, char *absolute_path)
+void create_abs_path(char *directory, char *filename, char *absolute_path)
 {
 	_format(directory, filename, absolute_path, "/");
 }

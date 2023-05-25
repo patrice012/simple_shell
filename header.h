@@ -42,7 +42,7 @@ extern char *program_name;
 
 /* functions prototypes */
 
-void create_absolute_path(char *directory, char *filename, char *absolute_path);
+void create_abs_path(char *directory, char *filename, char *absolute_path);
 char *_exec_file(char *path);
 int run_built_in_command(char **av, char *line_buffer);
 
@@ -59,8 +59,8 @@ void sig_handler(int sig);
 /* build-in commands */
 void shell_exit(char **av);
 void shell_env(void);
-int _unsetenv( char *variable);
-int _setenv( char *variable,  char *value);
+int _unsetenv(char *variable);
+int _setenv(char *variable, char *value);
 char *format_tilde(char *str);
 int change_dir(char *dir);
 int alias(char **tokens);
