@@ -9,7 +9,7 @@ int main(void)
 {
 	char *input;
 	char **args;
-	int status;
+	int status, fd = STDIN_FILENO;
 
 	/* Register signal handlers */
 	signal(SIGINT, handle_sigint);
@@ -17,6 +17,9 @@ int main(void)
 	signal(SIGTSTP, handle_sigstp);
 
 	do {
+		/* print shell prompt in interactive mode */
+		if (isatty(fd))
+			prompt();
 		input = get_input();
 		if (!input || !*input)/* EOF detected, exit the loop */
 			break;
@@ -31,7 +34,8 @@ int main(void)
 		status = execute(args);
 		free(input);
 		free_double_pointer(args);
-
+		if (!isatty(fd))
+			break;
 		/* Set status to 1 to continue the loop */
 		status = 1;
 	} while (status);

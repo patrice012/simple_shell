@@ -9,11 +9,26 @@ shopt -s nullglob
 #This is useful because otherwise, if there were no .c files in the directory, the *.c
 #pattern would be left as is, and the loop below would execute once with the literal string *.c.
 
-files=( *.c )
+# Get the current working directory
+directory=$(pwd)
+
+# Create an empty array
+files=()
+
+# Check if any files match the patterns
+c_files=( "$directory"/*.c )
+h_files=( "$directory"/*.h )
+shopt -u nullglob
+
 
 #This creates an array called files and populates it with the names of all .c 
 #files in the current directory. The *.c pattern expands to a list of filenames,
 #which are stored in the files array.
+
+# Add the matching files to the array
+files+=( "${c_files[@]}" "${h_files[@]}" )
+
+# run commands
 
 if [ ${#files[@]} -eq 0 ]; then
   echo "no .c file found"

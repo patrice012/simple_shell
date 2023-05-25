@@ -22,6 +22,7 @@
 #define BUFFER_SIZE 1024
 
 extern char **environ;
+extern int status_code;
 
 /* prompt.c */
 void prompt(void);
@@ -92,6 +93,7 @@ unsigned int _strspn(char *s, char *accept);
 
 /* utils_funcs3.c */
 int _atoi(const char *str);
+char *_itoa(int num);
 char *_memset(char *, char, unsigned int);
 char *_memcpy(char *dest, char *src, unsigned int n);
 void *_realloc(void *, unsigned int, unsigned int);
@@ -104,5 +106,8 @@ int _write_stderr(char *str);
 
 /* useful helper functions */
 void create_abs_path(char *directory, char *filename, char *absolute_path);
+int is_numeric(char *s);
+int digits(int num);
+int is_digit(char c);
 
 #endif
