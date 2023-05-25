@@ -1,122 +1,127 @@
-#include "header.h"
+#include "main.h"
 
 /**
- * _strcpy - copies a string
- * @dest: the destination
- * @src: the source
+ * _strlen - returns length of string
  *
- * Return: pointer to destination
+ * @s: string
+ * Return: length of string
  */
-char *_strcpy(char *dest, char *src)
+size_t _strlen(char *s)
 {
-	int i = 0;
+	int count = 0;
 
-	if (dest == src || src == 0)
-		return (dest);
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = 0;
+	while (s[count] != '\0')
+		count++;
+
+	return (count);
+}
+
+/**
+ * _strcat - concatenate to strings
+ *
+ * @dest: destination string
+ * @src: source string
+ *
+ * Return: dest if exists
+ */
+char *_strcat(char *dest, char *src)
+{
+	char *ptr;
+
+	if (dest == NULL)
+		return (NULL);
+
+	ptr = dest + _strlen(dest);
+
+	while (*src != '\0')
+		*ptr++ = *src++;
+
+	*ptr = '\0';
+
 	return (dest);
 }
 
 /**
- * _strcat - concatenates two strings
- * @dest: the destination buffer
- * @src: the source buffer
+ * _strdup - returns a pointer to a copy of a string
  *
- * Return: pointer to destination buffer
- */
-char *_strcat(char *dest, const char *src)
-{
-	char *ret = dest;
-
-	while (*dest)
-		dest++;
-	while (*src)
-		*dest++ = *src++;
-	*dest = *src;
-	return (ret);
-}
-
-/**
- * _strdup - duplicates a string
- * @str: the string to duplicate
+ * @s: string to be copied
  *
- * Return: pointer to the duplicated string
+ * Return: pointer to new copy
  */
-char *_strdup(const char *str)
+char *_strdup(char *s)
 {
-	int length = 0;
-	char *ret;
+	char *copy = NULL;
+	size_t len = 0, i;
 
-	if (str == NULL)
+	if (s == NULL)
 		return (NULL);
-	while (*str++)
-		length++;
-	ret = malloc(sizeof(char) * (length + 1));
-	if (!ret)
-		return (NULL);
-	for (length++; length--;)
-		ret[length] = *--str;
-	return (ret);
-}
 
+	len = _strlen(s) + 1;
 
-/**
- * _strspn - a function that gets the
- *           length of a prefix substring
- *
- * @s: pointer to string input
- * @accept: substring prefix to look for
- *
- * Return: the number of bytes in the initial segment
- */
-unsigned int _strspn(char *s, char *accept)
-{
-	unsigned int i, j;
+	copy = malloc(len * sizeof(char));
 
-	for (i = 0; s[i]; i++)
+	if (copy != NULL)
 	{
-		for (j = 0; accept[j]; j++)
-		{
-			if (s[i] == accept[j])
-				break;
-		}
-		if (!accept[j])
-			return (i);
+		for (i = 0; i < len; i++)
+			copy[i] = s[i];
 	}
 
-	return (i);
+	return (copy);
 }
 
+/**
+ * _strchr - finds first instance of a char
+ *				in a string.
+ *
+ * @str: the string to search in.
+ * @ch: the character to search for.
+ *
+ * Return: If found, return a pointer value,
+ *				If not, return NULL.
+ */
+char *_strchr(char *str, int ch)
+{
+	int i;
+
+	for (i = 0; str[i] != '\0'; i++)
+	{
+		if (ch == str[i])
+			return (&str[i]);
+	}
+
+	return (NULL);
+}
 
 /**
- * _atoi - Converts a string to an integer.
- * @str: The string to convert.
+ * _atoi - convert string to integer
  *
- * Return: The integer value of the string.
+ * @str: string
+ *
+ * Return: returns integer.
+ *
+ * note: *10 is an indication if digit.
  */
-int _atoi(const char *str)
+int _atoi(char *str)
 {
-	int i, sign;
-	unsigned int num;
+	int res = 0, sign = 1;
+	int i = 0;
 
-	i = 0;
-	sign = 1;
-	num = 0;
+	while (str[i] == ' ')
+		i++;
 
-	while (str[i] != '\0')
+	if (str[i] == '-')
 	{
-		if (str[i] == '-')
-			sign *= -1;
-		else if (str[i] >= '0' && str[i] <= '9')
-			num = (num * 10) + (str[i] - '0');
-		else
-			break;
+		sign = -1;
 		i++;
 	}
-	return (num * sign);
+	else if (str[i] == '+')
+		i++;
+
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		res = res * 10 + (str[i] - '0');
+		i++;
+	}
+
+	return (sign * res);
 }

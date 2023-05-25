@@ -1,4 +1,4 @@
-#include "header.h"
+#include "main.h"
 
 /**
  * error_127 - print error message for command not found failures.

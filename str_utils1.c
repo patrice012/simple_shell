@@ -1,127 +1,137 @@
-#include "header.h"
+#include "main.h"
 
 /**
- * _strlen - returns the length of a string
- * @s: the string whose length to check
+ * _substr - extracts characters from source
+ *			                between m and n.
  *
- * Return: integer length of string
+ * @src: string
+ * @m: first character
+ * @n: second character
+ * Return: return string between m & n
  */
-int _strlen(const char *s)
+char *_substr(char *src, int m, int n)
 {
-	int i = 0;
+	int len = n - m, i;
+	char *ptr;
 
-	if (!s)
-		return (0);
+	ptr = (char *)malloc(sizeof(char) * (len + 2));
+	m--;
 
-	while (*s++)
-		i++;
-	return (i);
+	for (i = m; i < n && (src[i] != '\0'); i++)
+		ptr[i - m] = src[i];
+
+	ptr[len + 1] = '\0';
+
+	return (ptr);
 }
 
 /**
- * _strcmp - Compare two strings.
- * @s1: The first string to compare.
- * @s2: The second string to compare.
- * Return: 0 if @s1 and @s2 are equal,
- *         a negative value if @s1 is less than @s2,
- *         or a positive value if @s1 is greater than @s2.
+ * _strcmp - compares two strings
+ *
+ * @s1: first string
+ * @s2: second string
+ *
+ * Return: integer less than/equal to/greater than if s1 is found
  */
-int _strcmp(const char *s1, const char *s2)
+int _strcmp(char *s1, char *s2)
 {
-	while (*s1 != '\0' && *s2 != '\0' && *s1 == *s2)
+	while (*s1 && *s2 && *s1 == *s2)
 	{
 		s1++;
 		s2++;
 	}
 
-	return ((int) (*s1) - (*s2));
-}
-
-/**
- * _strncmp - Compare two strings up to a specified length.
- * @s1: First string to compare.
- * @s2: Second string to compare.
- * @n: Maximum number of characters to compare.
- *
- * Return: 0 if the strings are equal up to n characters, negative value
- *         if s1 is less than s2, or positive value if s1 is greater than s2.
- */
-int _strncmp(const char *s1, const char *s2, size_t n)
-{
-	unsigned char c1, c2;
-
-	while (n-- > 0)
-	{
-		c1 = (unsigned char) *s1++;
-		c2 = (unsigned char) *s2++;
-
-		if (c1 != c2)
-			return (c1 - c2);
-		if (c1 == '\0')
-			break;
-	}
+	if (*s1 != *s2)
+		return (*s1 - *s2);
 
 	return (0);
 }
 
 /**
- * _strstr - checks if needle starts with haystack
- * @haystack: string to search
- * @needle: the substring to find
+ * _strncmp - compares two strings until n
  *
- * Return: address of next char of haystack or NULL
+ * @s1: first string
+ * @s2: second string
+ * @n: the first n length to compare
+ *
+ * Return: integer less than/equal to/greater than if s1 is found
  */
-char *_strstr(char *haystack, char *needle)
+int _strncmp(char *s1, char *s2, size_t n)
 {
-	int i;
-
-	for (i = 0; haystack[i] != '\0'; i++)
+	while (n && *s1 && *s2 && *s1 == *s2)
 	{
-		if (haystack[i] == needle[0])
-		{
-			int j;
-
-			for (j = 0; needle[j] != '\0'; j++)
-			{
-				if (haystack[i + j] != needle[j])
-				{
-					break;
-				}
-			}
-
-			if (needle[j] == '\0')
-			{
-				return (&haystack[i]);
-			}
-		}
+		s1++;
+		s2++;
+		n--;
 	}
-	return (NULL);
+	if (n == 0)
+	{
+		return (0);
+	}
+	else
+	{
+		return (*s1 - *s2);
+	}
 }
 
 /**
- * _strchr - a function that locates a character in a string
+ * _strcpy - copies from source to destination
  *
- * @s: pointer to our string array input
- * @c: character to locate from input array
+ * @dest: destination
+ * @src: source
  *
- * Return: first occurence of charatcer or null if not found
-*/
-
-char *_strchr(char *s, char c)
+ * Return: destination if exists
+ *
+ * note: to avoid segmentation fault or wrong output,
+ *					Size Of Dest + 1 < Size Of Src.
+ */
+char *_strcpy(char *dest, char *src)
 {
-	while (*s != '\0')
-	{
-		if (*s == c)
-			return (s);
-		s++;
-	}
-	/**
-	 * if c is '\0', you should return
-	 * the pointer to the '\0' of the
-	 * string s
-	*/
-	if (*s == c)
-		return (s);
-	/*return null if not found*/
-	return (NULL);
+	char *ptr;
+
+	if (dest == NULL)
+		return (src);
+	if (src == NULL)
+		return (NULL);
+
+	ptr = dest;
+
+	while (*src)
+		*ptr++ = *src++;
+
+	*ptr = '\0';
+
+	return (dest);
+}
+
+/**
+ * _strncpy - copies from source to destination
+ *				until n characters.
+ *
+ * @dest: destination
+ * @src: source
+ * @n: number of characters to copy to
+ *
+ * Return: destination if exists, otherwise null.
+ *
+ * note: to avoid segmentation fault or wrong output,
+ *					Size Of Dest + 1 < n.
+ */
+char *_strncpy(char *dest, char *src, size_t n)
+{
+	char *ptr;
+
+	if (dest == NULL)
+		return (src);
+	if (src == NULL)
+		return (NULL);
+
+	ptr = dest;
+
+	while (*src && (n-- != 0))
+		*ptr++ = *src++;
+
+	*ptr = '\0';
+
+	return (dest);
 }

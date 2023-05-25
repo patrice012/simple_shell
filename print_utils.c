@@ -1,42 +1,29 @@
-#include "header.h"
-
+#include "main.h"
 
 /**
- * _puterror - Prints an error message to the standard error stream
- * @err: The error message to print
+ * print_str - prints a string to stdout
  *
- * Return: Void
+ * @s: pointer to an array of chars
  */
-void _puterror(char *err)
+void print_str(char *s)
 {
-	if ((_write_stderr(err)) == -1)
-	{
-		perror("write");
-	}
+	int i;
+
+	i = _strlen(s);
+
+	write(STDOUT_FILENO, s, i);
 }
 
 /**
- *_putchar - writes the character c to stdout
- * @c: The character to print
- * Return: On success 1.
- * On error, -1 is returned, and errno is set appropriately.
- */
-int _putchar(char c)
-{
-	return (write(1, &c, 1));
-}
-
-/**
- * _puts - Prints a string to the standard output stream
- * @str: The string to print
+ * print_err - prints error to stderr
  *
- * Return: Void
+ * @s: error message to print.
  */
-void _puts(char *str)
+void print_err(char *s)
 {
-	if ((_write_stdout(str)) == -1)
-	{
-		perror("write");
-	}
-}
+	int i;
 
+	i = _strlen(s);
+
+	write(STDERR_FILENO, s, i);
+}

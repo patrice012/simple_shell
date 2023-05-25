@@ -1,4 +1,4 @@
-#include "header.h"
+#include "main.h"
 
 int digits(int num);
 
