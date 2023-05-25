@@ -49,7 +49,6 @@ int main(int argc, char **argv)
 			/* run cmd */
 		run_cmd(line_buffer, argv);
 	}
-
 		if (fd != STDIN_FILENO)
 			close(fd);
 
@@ -70,16 +69,16 @@ int main(int argc, char **argv)
 
 void shell_prompt(void)
 {
-	char cwd[PATH_MAX], *formatted_str;
+	char cwd[PATH_MAX], *format;
 
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		perror("getcwd() error");
 
-	formatted_str = format_tilde(cwd);
-	if (formatted_str != NULL)
-		_strcpy(cwd, formatted_str);
+	format = format_tilde(cwd);
+	if (format != NULL)
+		_strcpy(cwd, format);
 	print_str(cwd);
-	free(formatted_str);
+	free(format);
 	print_str("$ ");
 	fflush(stdout);
 }
