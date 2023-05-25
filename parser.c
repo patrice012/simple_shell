@@ -87,7 +87,10 @@ char *parse_path(char *cmd)
 	struct stat st;
 
 	if (cmd == NULL)
+	{
+		free_pointer(path_copy, NULL);
 		return (NULL);
+	}
 
 	if (path_copy == NULL)
 		return (strdup(cmd));
@@ -104,17 +107,20 @@ char *parse_path(char *cmd)
 		/* if file exist and is an executable file */
 		if (access(abs_path, X_OK) == 0)
 		{
-			/*free(path_copy);*/
+			token = NULL;
 			free_pointer(path_copy, NULL);
 			return (abs_path);
 		}
 		/*free(abs_path);*/
-		free_pointer(abs_path, NULL);
+		/*free_pointer(abs_path, NULL);*/
+		free(abs_path);
 		token = strtok(NULL, ":");
 	}
-	free_pointer(path_copy, token, abs_path, NULL);
+	/*free_pointer(path_copy, token, abs_path, NULL);*/
 	/* check if command itself is a file_path that exists */
 	if (stat(cmd, &st) == 0)
 		return (cmd);
+	free(path_copy);
+	free(token);
 	return (NULL);
 }

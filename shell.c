@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 			/* run cmd */
 		run_cmd(line_buffer, argv);
 		if (!isatty(fd)) /* non-interactive */
-			return (0);
+			break;
 	}
 		if (fd != STDIN_FILENO)
 			close(fd);
@@ -61,6 +61,7 @@ int main(int argc, char **argv)
 	/* cleaning the environment and all pointers */
 	free_env();
 	free_pointer(line_buffer, NULL);
+	program_name = NULL;
 	return (status_code);
 }
 

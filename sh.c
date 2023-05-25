@@ -36,6 +36,7 @@ void run_cmd(char *line_buffer, char **argv)
 			break;
 		else if (sep == '#')
 			break;
+		cmd = NULL;
 	}
 }
 
@@ -48,11 +49,11 @@ void run_cmd(char *line_buffer, char **argv)
  * @argv: arg vector
  * Return: exit status code of child process
  */
-int run_sys_cmd(char **av, int n, char **argv)
+int run_sys_cmd(char **av,UNUSED int n, char **argv)
 {
 	char *_path;
 	struct stat st;
-	int child_pid, child_status = -1, j;
+	int child_pid, child_status = -1;
 
 	_path = parse_path(av[0]);
 	if (_path == NULL)
@@ -81,8 +82,10 @@ int run_sys_cmd(char **av, int n, char **argv)
 		if (execve(_path, av, environ) == -1)
 		{
 			perror(program_name);
-			for (j = 0; j < n; j++)
-				free(av[j]);
+			/*
+			 *for (j = 0; j < n; j++)
+			 *	free(av[j]);
+			 */
 			free(_path);
 			_exit(1);
 		}
