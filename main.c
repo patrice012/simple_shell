@@ -17,7 +17,7 @@ void sig_handler(int sig);
  * @envp: environment variable list
  * Return: 0 on success
  */
-int main(int argc, char **argv, char **envp UNUSED)
+int main(int argc, char **argv, char **envp __attribute__((unused)))
 {
 	size_t line_size = 0;
 	int fd = STDIN_FILENO;

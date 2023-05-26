@@ -10,6 +10,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <ctype.h>
 
 #define BUFFER_SIZE 1024
 #define UNUSED __attribute__((unused))

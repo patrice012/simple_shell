@@ -20,7 +20,7 @@ char *get_input(void)
 		if (reads == -1)
 		{
 			free(input);
-			_puts("\n");
+			print_str("\n");
 			return (NULL);
 		}
 
