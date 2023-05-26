@@ -12,20 +12,20 @@ char *get_input(int fd)
 	size_t line_size = 0;
 	ssize_t reads;
 
-	do {
-		/* get a line of line_buffer from user */
-		reads = getline(&line_buffer, &line_size, stdin);
-		/*reads  = _getline(&line_buffer, &line_size, fd);*/
-		/* check for EOF or error */
-		if (reads == -1)
-		{
-			free(line_buffer);
-			print_str("\n");
-			return (NULL);
-		}
-		/* remove trailing newline character */
-		line_buffer[reads - 1] = '\0';
-	} while (line_buffer[0] == '\0' || isspace(line_buffer[0]));
+
+	/* get a line of line_buffer from user */
+	/*reads = getline(&line_buffer, &line_size, stdin);*/
+	reads  = _getline(&line_buffer, &line_size, fd);
+	/* check for EOF or error */
+	if (reads == -1)
+	{
+		free(line_buffer);
+		print_str("\n");
+		return (NULL);
+	}
+	/* remove trailing newline character */
+	/*line_buffer[reads - 1] = '\0';*/
+
 	/* update last_input to point to the new line_buffer */
 	last_input = line_buffer;
 	return (line_buffer);
