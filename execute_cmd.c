@@ -9,13 +9,12 @@
 void execute(char *line_buffer)
 {
 	int n, j, cmd_status;
-	char *argv[MAX_ARGS_COUNT + 1], *cmd;/* *rest, sep*/
+	char *argv[MAX_ARGS_COUNT + 1], *cmd, *rest, sep;/* *rest, sep*/
 
-	/*rest = line_buffer;*/
-	cmd = line_buffer;/* cmd => rest */
-	while (cmd != NULL)/* cmd => rest */
+	rest = line_buffer;
+	while (rest != NULL)
 	{
-		/*split_cmd(rest, &sep, &cmd, &rest);*/
+		split_cmd(rest, &sep, &cmd, &rest);
 		cmd_status = 0, hist++;
 		n = parse_cmd(cmd, argv);
 		if (n == 0)
@@ -33,12 +32,10 @@ void execute(char *line_buffer)
 		status_code = cmd_status;
 		if (cmd_status == 0 || cmd_status == 127 || cmd_status == 126)
 			break;
-		/*if (sep == '|' && cmd_status == 0)*/
-			/*break;*/
-		/*else if (sep == '&' && cmd_status != 0)*/
-			/*break;*/
-		/*else if (sep == '#')*/
-			/*break;*/
+		if ((sep == '|' && cmd_status == 0) || (sep == '&' && cmd_status != 0))
+			break;
+		else if (sep == '#')
+			break;
 	}
 }
 
