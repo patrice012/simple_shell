@@ -24,7 +24,7 @@ char *get_input(int fd)
 			return (NULL);
 		}
 		/* remove trailing newline character */
-		line_buffer[reads - 1] = '\0';
+		/*line_buffer[reads - 1] = '\0';*/
 	} while (line_buffer[0] == '\0' || isspace(line_buffer[0]));
 	/* update last_input to point to the new line_buffer */
 	last_input = line_buffer;
