@@ -95,6 +95,6 @@ int _putchar(char c);
 
 
 /********************************** */
-char *get_input(int fd);
+char **get_input(int fd);
 
 #endif

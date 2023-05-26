@@ -1,12 +1,12 @@
 #include "main.h"
 
-/*static char *last_input;*/
+static char *last_input;
 /**
  * get_input - Read the line of line_buffer from user.
  * @fd: file descriptor
  * Return: Pointer to a buffer conatining the user's line_buffer.
 */
-char *get_input(int fd)
+char **get_input(int fd)
 {
 	char *line_buffer = NULL;
 	size_t line_size = 0;
@@ -26,6 +26,7 @@ char *get_input(int fd)
 	/*line_buffer[reads - 1] = '\0';*/
 
 	/* update last_input to point to the new line_buffer */
-	/*last_input = line_buffer;*/
-	return (line_buffer);
+	last_input = line_buffer;
+	/*return (&line_buffer);*/
+	return (&last_input);
 }
