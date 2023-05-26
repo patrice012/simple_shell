@@ -14,8 +14,8 @@ char *get_input(int fd)
 
 	do {
 		/* get a line of line_buffer from user */
-		/*reads = getline(&line_buffer, &line_size, stdin);*/
-		reads  = _getline(&line_buffer, &line_size, fd);
+		reads = getline(&line_buffer, &line_size, stdin);
+		/*reads  = _getline(&line_buffer, &line_size, fd);*/
 		/* check for EOF or error */
 		if (reads == -1)
 		{
@@ -24,7 +24,7 @@ char *get_input(int fd)
 			return (NULL);
 		}
 		/* remove trailing newline character */
-		/*line_buffer[reads - 1] = '\0';*/
+		line_buffer[reads - 1] = '\0';
 	} while (line_buffer[0] == '\0' || isspace(line_buffer[0]));
 	/* update last_input to point to the new line_buffer */
 	last_input = line_buffer;
