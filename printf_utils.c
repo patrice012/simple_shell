@@ -7,7 +7,7 @@
  */
 void print_str(char *s)
 {
-    _write_stdout(s);
+	_write_stdout(s);
 }
 
 /**
@@ -17,7 +17,7 @@ void print_str(char *s)
  */
 void print_err(char *s)
 {
-    _write_stderr(s);
+	_write_stderr(s);
 }
 
 /**
@@ -28,5 +28,5 @@ void print_err(char *s)
 
 int _putchar(char c)
 {
-    return (write(1, &c, sizeof(c)));
+	return (write(1, &c, sizeof(c)));
 }
