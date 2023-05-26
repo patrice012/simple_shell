@@ -2,43 +2,42 @@
 
 static char *last_input;
 /**
- * get_input - Read the line of input from user.
- *
- * Return: Pointer to a buffer conatining the user's input.
+ * get_input - Read the line of line_buffer from user.
+ * @fd: file descriptor
+ * Return: Pointer to a buffer conatining the user's line_buffer.
 */
-char *get_input(void)
+char *get_input(int fd)
 {
-	char *input = NULL;
-	size_t input_size = 0;
+	char *line_buffer = NULL;
+	size_t line_size = 0;
 	ssize_t reads;
 
 	do {
-		/* get a line of input from user */
-		reads = getline(&input, &input_size, stdin);
-
+		/* get a line of line_buffer from user */
+		/*reads = getline(&line_buffer, &line_size, stdin);*/
+		reads  = _getline(&line_buffer, &line_size, fd);
 		/* check for EOF or error */
 		if (reads == -1)
 		{
-			free(input);
+			free(line_buffer);
 			print_str("\n");
 			return (NULL);
 		}
-
 		/* remove trailing newline character */
-		input[reads - 1] = '\0';
-
-	} while (input[0] == '\0' || isspace(input[0]));
-
-	/* update last_input to point to the new input */
-	last_input = input;
-	return (input);
+		line_buffer[reads - 1] = '\0';
+	} while (line_buffer[0] == '\0' || isspace(line_buffer[0]));
+	/* update last_input to point to the new line_buffer */
+	last_input = line_buffer;
+	return (line_buffer);
 }
 
 /**
- * free_last_input - Frees the most recent input entered by the user.
+ * free_last_input - Frees the most recent line_buffer entered by the user.
  *
- * This function frees the memory allocated for the most recent input string
- * entered by the user. It should be called after the input string is no longer
+ * This function frees the memory allocated
+ * for the most recent line_buffer string
+ * entered by the user. It should be called
+ * after the line_buffer string is no longer
  * needed.
  */
 void free_last_input(void)
