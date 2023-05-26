@@ -1,6 +1,6 @@
 #include "main.h"
 
-static char *last_input;
+/*static char *last_input;*/
 /**
  * get_input - Read the line of line_buffer from user.
  * @fd: file descriptor
@@ -20,14 +20,13 @@ char *get_input(int fd)
 	if (reads == -1)
 	{
 		free(line_buffer);
-		print_str("\n");
 		return (NULL);
 	}
 	/* remove trailing newline character */
 	/*line_buffer[reads - 1] = '\0';*/
 
 	/* update last_input to point to the new line_buffer */
-	last_input = line_buffer;
+	/*last_input = line_buffer;*/
 	return (line_buffer);
 }
 
