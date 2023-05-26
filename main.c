@@ -62,16 +62,14 @@ int main(int argc, char **argv, char **envp __attribute__((unused)))
 void execute(char *line_buffer)
 {
 	int n, j, cmd_status;
-	char *argv[MAX_ARGS_COUNT + 1], *cmd, *rest, sep;
+	char *argv[MAX_ARGS_COUNT + 1], *cmd;/* *rest, sep*/
 
-	rest = line_buffer;
-	/*cmd = line_buffer;*/
-
-	while (rest != NULL)
+	/*rest = line_buffer;*/
+	cmd = line_buffer;/* cmd => rest */
+	while (cmd != NULL)/* cmd => rest */
 	{
-		split_cmd(rest, &sep, &cmd, &rest);
+		/*split_cmd(rest, &sep, &cmd, &rest);*/
 		cmd_status = 0, hist++;
-
 		n = parse_cmd(cmd, argv);
 		if (n == 0)
 			break;
@@ -86,12 +84,14 @@ void execute(char *line_buffer)
 			free(argv[j]);
 
 		status_code = cmd_status;
-		if (sep == '|' && cmd_status == 0)
+		if (cmd_status == 0)
 			break;
-		else if (sep == '&' && cmd_status != 0)
-			break;
-		else if (sep == '#')
-			break;
+		/*if (sep == '|' && cmd_status == 0)*/
+			/*break;*/
+		/*else if (sep == '&' && cmd_status != 0)*/
+			/*break;*/
+		/*else if (sep == '#')*/
+			/*break;*/
 	}
 }
 
@@ -141,7 +141,6 @@ int execute_system_cmd(char **argv, int n)
 		error_126(argv[0]);
 		return (126);
 	}
-
 
 	child_pid = create_process();
 
