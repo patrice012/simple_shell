@@ -1,4 +1,4 @@
-#include "main.h"
+#include "header.h"
 
 /**
  * _write - write string to file descriptor

@@ -1,4 +1,4 @@
-#include "main.h"
+#include "header.h"
 
 /**
  * free_double_pointer - frees memory allocated dynamically by tokenize()

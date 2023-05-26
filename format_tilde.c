@@ -1,19 +1,19 @@
-#include "main.h"
+#include "header.h"
 
 
 /**
- * format_tilde - search string for home/@USERNAME
+ * format_cmd_line - search string for home/@USERNAME
  *			            if exists, change it to ~.
  *
  * @str: string to search for.
  * Return: string
  */
-char *format_tilde(char *str)
+char *format_cmd_line(char *str)
 {
 	int len = 0, path_len = 0;
 	char *home, *username, *result, *tmp;
 
-	username = _getenv("USERNAME");
+	username = _get_env("USERNAME");
 
 	if (username == NULL)
 		return (NULL);

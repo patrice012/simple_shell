@@ -1,4 +1,4 @@
-#include "main.h"
+#include "header.h"
 
 /**
  * handle_variables - handle variable replacment for arguments
@@ -20,7 +20,7 @@ void handle_variables(char **argv)
 				value = _itoa(status_code);
 			else if (argv[i][1] != '\0')
 			{
-				value = _strdup(_getenv(argv[i] + 1));
+				value = _strdup(_get_env(argv[i] + 1));
 				if (value == NULL)
 				{
 					argv[i][0] = '\0';
@@ -51,7 +51,7 @@ void handle_aliases(char **argv)
 	int i, j, len, change = 1;
 	char *alias_env, *alias_value;
 
-	alias_env = _getenv("alias");
+	alias_env = _get_env("alias");
 	if (alias_env == NULL)
 		return;
 

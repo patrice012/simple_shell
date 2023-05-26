@@ -1,5 +1,5 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef HEADER_H
+#define HEADER_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,7 +31,7 @@ void split_cmd(char *buffer, char *separator, char **cmd, char **rest);
 /* Built-in shell functions */
 int exit_shell(char *line_buffer, char **argv);
 void _env(void);
-char *format_tilde(char *str);
+char *format_cmd_line(char *str);
 int change_directory(char *dir);
 int alias(char **tokens);
 
@@ -46,6 +46,12 @@ void execute(char *line_buffer);
 int execute_system_cmd(char **argv, int n);
 int create_process(void);
 int check_for_builtin(char **argv, char *line_buffer);
+
+
+/* signal handler utils */
+void handle_sigint(int sig);
+void handle_sigquit(int sig);
+void handle_sigstp(int sig);
 
 
 /* string functions */
@@ -69,9 +75,9 @@ ssize_t get_input(char **buffer, int fd);
 
 /* environment functions */
 int setup_env(void);
-int _getenvLen(void);
+int _get_env_len(void);
 void free_env(void);
-char *_getenv(char *var);
+char *_get_env(char *var);
 int _setenv(char *name, char *value);
 int _unsetenv(char *name);
 
@@ -100,7 +106,7 @@ void error_cd(char *dir);
 void error_file(char *file);
 
 /* File processing */
-int process_file(char *file, int *fd);
+/*int check_file(char *file, int *fd);*/
 
 /* write utils */
 int _write_stdout(char *str);

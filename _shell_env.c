@@ -1,4 +1,4 @@
-#include "main.h"
+#include "header.h"
 
 /**
  * _env - prints all environmental variables.

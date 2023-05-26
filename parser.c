@@ -1,4 +1,4 @@
-#include "main.h"
+#include "header.h"
 
 /**
  * parse_cmd - extracts the command and arguments
@@ -63,7 +63,7 @@ int parse_cmd(char *cmd, char **argv)
 char *find_in_path(char *cmd)
 {
 	int i = 0, k = 0, j, len;
-	char *value = _getenv("PATH"), *path = malloc(1);
+	char *value = _get_env("PATH"), *path = malloc(1);
 	struct stat st;
 
 	if (value == NULL)

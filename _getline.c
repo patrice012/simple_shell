@@ -1,4 +1,4 @@
-#include "main.h"
+#include "header.h"
 
 /* local helper function headers */
 int update_buffer(char **buffer,

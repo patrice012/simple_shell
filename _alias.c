@@ -1,4 +1,4 @@
-#include "main.h"
+#include "header.h"
 
 void update_alias_env(char *new_alias, char *new_value, int update_env);
 char *setup_alias(char *alias, int len);
@@ -42,7 +42,7 @@ int print_alias(char *name)
 	int i, len;
 	char *alias_env, *alias_value;
 
-	alias_env = _getenv("alias");
+	alias_env = _get_env("alias");
 	if (alias_env == NULL)
 		return (2);
 
@@ -105,7 +105,7 @@ int set_alias(char *new_value)
 	name_len = _strchr(new_value, '=') - new_value;
 	new_value = setup_alias(new_value, name_len);
 
-	alias_env = _getenv("alias");
+	alias_env = _get_env("alias");
 	if (alias_env == NULL)
 	{
 		new_alias = (char *)malloc(sizeof(char) * _strlen(new_value) + 2);

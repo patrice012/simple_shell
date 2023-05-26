@@ -1,4 +1,4 @@
-#include "main.h"
+#include "header.h"
 
 /**
  * _setenv - Set the value of an environment variable

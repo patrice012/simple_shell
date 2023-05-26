@@ -1,10 +1,10 @@
-#include "main.h"
+#include "header.h"
 
 char *prog_name;
 int status_code;
 int hist;
 
-void sig_handler(int sig);
+
 /**
  * main - entry point
  *
@@ -20,11 +20,14 @@ int main(int argc, char **argv, char **envp __attribute__((unused)))
 	char *line_buffer = NULL;
 
 	prog_name = argv[0];
-	signal(SIGINT, sig_handler);
+	/* Register signal handlers */
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, handle_sigquit);
+	signal(SIGTSTP, handle_sigstp);
 	/*
 	 *if (argc > 1)
 	 *{
-	 *	status_code = process_file(argv[1], &fd);
+	 *	status_code = check_file(argv[1], &fd);
 	 *	if (status_code)
 	 *		return (status_code);
 	 *}
@@ -51,17 +54,4 @@ int main(int argc, char **argv, char **envp __attribute__((unused)))
 	if (isatty(fd))
 		print_str("\n");
 	return (status_code);
-}
-
-
-/**
- * sig_handler - handle SIGINT signal
- *
- * @sig: signal value
- */
-void sig_handler(int sig)
-{
-	print_str("\n");
-	shell_prompt();
-	(void) sig;
 }

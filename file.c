@@ -1,14 +1,14 @@
-#include "main.h"
+#include "header.h"
 
 /**
- * process_file - updates file descriptor to read input from a file
+ * check_file - updates file descriptor to read input from a file
  *
  * @file: the path to the file
  * @fd: the file descriptor to update
  *
  * Return: 0 on sucess, otherwise error code
  */
-int process_file(char *file, int *fd)
+int check_file(char *file, int *fd)
 {
 	struct stat st;
 

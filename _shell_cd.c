@@ -1,4 +1,4 @@
-#include "main.h"
+#include "header.h"
 
 
 /**
@@ -14,22 +14,22 @@ int change_directory(char *dir)
 
 	if (dir == NULL || *dir == '\0')
 	{
-		dir = _strdup(_getenv("HOME"));
+		dir = _strdup(_get_env("HOME"));
 		if (dir == NULL)
-			dir = _strdup(_getenv("PWD"));
+			dir = _strdup(_get_env("PWD"));
 	}
 	else if (_strcmp(dir, "-") == 0)
 	{
-		dir = _strdup(_getenv("OLDPWD"));
+		dir = _strdup(_get_env("OLDPWD"));
 		if (dir == NULL)
-			dir = _strdup(_getenv("PWD"));
+			dir = _strdup(_get_env("PWD"));
 
 		print_str(dir);
 		print_str("\n");
 	}
 	else
 		dir = _strdup(dir);
-	if (_setenv("OLDPWD", _getenv("PWD")) == -1)
+	if (_setenv("OLDPWD", _get_env("PWD")) == -1)
 	{
 		print_err("Failed to update OLDPWD env variable");
 		return (2);

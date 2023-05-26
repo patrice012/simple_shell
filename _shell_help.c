@@ -1,4 +1,4 @@
-#include "main.h"
+#include "header.h"
 
 /**
  * _help - displays help information for built-in commands

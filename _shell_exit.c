@@ -1,4 +1,4 @@
-#include "main.h"
+#include "header.h"
 
 /**
  * exit_shell - clears all allocated memory and

@@ -1,4 +1,4 @@
-#include "main.h"
+#include "header.h"
 
 /**
  * execute - checks whether a command is built-in or system command and
