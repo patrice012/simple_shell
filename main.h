@@ -95,6 +95,6 @@ int _putchar(char c);
 
 
 /********************************** */
-char **get_input(int fd);
+ssize_t get_input(char **buffer, int fd);
 
 #endif

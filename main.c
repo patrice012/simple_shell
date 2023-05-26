@@ -45,8 +45,7 @@ int main(int argc, char **argv, char **envp __attribute__((unused)))
 		if (isatty(fd))
 			shell_prompt();
 		/*if (_getline(&line_buffer, &line_size, fd) != -1)*/
-		line_buffer = *(get_input(fd));
-		if (line_buffer != NULL)
+		if (get_input(&line_buffer, fd) != -1)
 			run_cmd(line_buffer);
 		else
 			break;
