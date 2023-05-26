@@ -19,7 +19,7 @@ void sig_handler(int sig);
  */
 int main(int argc, char **argv, char **envp __attribute__((unused)))
 {
-	size_t line_size = 0;
+	/*size_t line_size = 0;*/
 	int fd = STDIN_FILENO;
 	char *line_buffer = NULL;
 
@@ -44,9 +44,9 @@ int main(int argc, char **argv, char **envp __attribute__((unused)))
 	{
 		if (isatty(fd))
 			shell_prompt();
-		if (_getline(&line_buffer, &line_size, fd) != -1)
-		/*line_buffer = *(get_input(fd));*/
-		/*if (line_buffer != NULL)*/
+		/*if (_getline(&line_buffer, &line_size, fd) != -1)*/
+		line_buffer = *(get_input(fd));
+		if (line_buffer != NULL)
 			run_cmd(line_buffer);
 		else
 			break;
