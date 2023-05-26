@@ -25,8 +25,8 @@ extern int hist;
 
 /* Parsers */
 int parse_cmd(char *cmd, char **argv);
-char *parse_path(char *cmd);
-void split_cmds(char *buffer, char *separator, char **cmd, char **rest);
+char *find_in_path(char *cmd);
+void split_cmd(char *buffer, char *separator, char **cmd, char **rest);
 
 /* Built-in shell functions */
 int exit_shell(char *line_buffer, char **argv);
@@ -96,5 +96,12 @@ int _putchar(char c);
 
 /********************************** */
 ssize_t get_input(char **buffer, int fd);
+void shell_prompt(void);
+void execute(char *line_buffer);
+int execute_system_cmd(char **argv, int n);
+void sig_handler(int sig);
+
+int create_process(void);
+int check_for_builtin(char **argv, char *line_buffer);
 
 #endif

@@ -53,14 +53,14 @@ int parse_cmd(char *cmd, char **argv)
 
 
 /**
- * parse_path - extracts existing paths holding
+ * find_in_path - extracts existing paths holding
  *				the command
  *
  * @cmd: the command
  *
  * Return: pointer to strings of the right paths
  */
-char *parse_path(char *cmd)
+char *find_in_path(char *cmd)
 {
 	int i = 0, k = 0, j, len;
 	char *value = _getenv("PATH"), *path = malloc(1);
@@ -100,7 +100,7 @@ char *parse_path(char *cmd)
 }
 
 /**
- * split_cmds - spilts the buffer containing commands into two strings
+ * split_cmd - spilts the buffer containing commands into two strings
  *
  * @buffer: a string that contains the commands
  * @separator: the separator that should be used to split the buffer
@@ -115,7 +115,7 @@ char *parse_path(char *cmd)
  * If no SEPARATOR can be found in BUFFER, the fucntion assigns the
  * whole BUFFER into CMD and REST is pointing to NULL
  */
-void split_cmds(char *buffer, UNUSED char *separator, char **cmd, char **rest)
+void split_cmd(char *buffer, UNUSED char *separator, char **cmd, char **rest)
 {
 	int i;
 	char quote = '\0';

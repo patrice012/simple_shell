@@ -4,11 +4,6 @@ char *prog_name;
 int status_code;
 int hist;
 
-void shell_prompt(void);
-void run_cmd(char *line_buffer);
-int run_sys_cmd(char **argv, int n);
-void sig_handler(int sig);
-
 /**
  * main - entry point
  *
@@ -33,7 +28,6 @@ int main(int argc, char **argv, char **envp __attribute__((unused)))
 	 *		return (status_code);
 	 *}
 	 */
-
 	if (setup_env())
 		return (-1);
 
@@ -44,19 +38,15 @@ int main(int argc, char **argv, char **envp __attribute__((unused)))
 	{
 		if (isatty(fd))
 			shell_prompt();
-		/*if (_getline(&line_buffer, &line_size, fd) != -1)*/
 		if (get_input(&line_buffer, fd) != -1)
-			run_cmd(line_buffer);
+			execute(line_buffer);
 		else
 			break;
 	}
-
 	free_env();
 	free(line_buffer);
-
 	if (fd != STDIN_FILENO)
 		close(fd);
-
 	if (isatty(fd))
 		print_str("\n");
 	return (status_code);
@@ -64,21 +54,22 @@ int main(int argc, char **argv, char **envp __attribute__((unused)))
 
 
 /**
- * run_cmd - checks whether a command is built-in or system command and
+ * execute - checks whether a command is built-in or system command and
  * calls the relevant function
  *
  * @line_buffer: the buffer that contains the command and it's arguments
  */
-void run_cmd(char *line_buffer)
+void execute(char *line_buffer)
 {
 	int n, j, cmd_status;
 	char *argv[MAX_ARGS_COUNT + 1], *cmd, *rest, sep;
 
 	rest = line_buffer;
+	/*cmd = line_buffer;*/
 
 	while (rest != NULL)
 	{
-		split_cmds(rest, &sep, &cmd, &rest);
+		split_cmd(rest, &sep, &cmd, &rest);
 		cmd_status = 0, hist++;
 
 		n = parse_cmd(cmd, argv);
@@ -87,20 +78,9 @@ void run_cmd(char *line_buffer)
 		/*handle_variables(argv);*/
 		/*handle_aliases(argv);*/
 
-		if (_strcmp(argv[0], "exit") == 0)
-			cmd_status = exit_shell(line_buffer, argv);
-		else if (_strcmp(argv[0], "env") == 0)
-			_env();
-		else if (_strcmp(argv[0], "setenv") == 0)
-			cmd_status = (_setenv(argv[1], argv[2]) ? 2 : 0);
-		else if (_strcmp(argv[0], "unsetenv") == 0)
-			cmd_status = (_unsetenv(argv[1]) ? 2 : 0);
-		else if (_strcmp(argv[0], "cd") == 0)
-			cmd_status = change_dir(argv[1]);
-		else if (_strcmp(argv[0], "alias") == 0)
-			cmd_status = alias(argv);
-		else
-			cmd_status = run_sys_cmd(argv, n);
+		cmd_status = check_for_builtin(argv, line_buffer);
+		if (cmd_status == 1)
+			cmd_status = execute_system_cmd(argv, n);
 
 		for (j = 0; j < n; j++)
 			free(argv[j]);
@@ -115,25 +95,41 @@ void run_cmd(char *line_buffer)
 	}
 }
 
+/**
+ * _is_valid_cmd - check if the command is found
+ * or if the path is correct
+ * @argv: array of strings storing the command and it's arguments
+ * @prog_path: program path
+ * Return: 0 for failure and 1 for success
+ */
+
+int _is_valid_cmd(char *prog_path, char **argv)
+{
+	struct stat st;
+
+	if ((_strcmp(prog_path, argv[0]) == 0 && _strncmp(prog_path, "./", 2) != 0 &&
+		(prog_path[0] != '/' && _strncmp(prog_path, "../", 3) != 0)) ||
+		stat(prog_path, &st) != 0)
+		return (0);
+	return (1);
+}
+
 
 /**
- * run_sys_cmd - runs a command and waits for it to finish
+ * execute_system_cmd - runs a command and waits for it to finish
  *
  * @argv: array of strings storing the command and it's arguments
  * @n: number of arguments in argv
  *
  * Return: exit status code of child process
  */
-int run_sys_cmd(char **argv, int n)
+int execute_system_cmd(char **argv, int n)
 {
 	char *prog_path;
 	int child_pid, child_status = -1, j;
-	struct stat st;
 
-	prog_path = parse_path(argv[0]);
-	if ((_strcmp(prog_path, argv[0]) == 0 && _strncmp(prog_path, "./", 2) != 0 &&
-		(prog_path[0] != '/' && _strncmp(prog_path, "../", 3) != 0)) ||
-		stat(prog_path, &st) != 0)
+	prog_path = find_in_path(argv[0]);
+	if (_is_valid_cmd(prog_path, argv) == 0)
 	{
 		free(prog_path);
 		error_127(argv[0]);
@@ -146,9 +142,8 @@ int run_sys_cmd(char **argv, int n)
 		return (126);
 	}
 
-	child_pid = fork();
-	if (child_pid == -1)
-		perror(prog_name);
+
+	child_pid = create_process();
 
 	if (child_pid == 0)
 	{
