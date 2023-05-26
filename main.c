@@ -84,7 +84,7 @@ void execute(char *line_buffer)
 			free(argv[j]);
 
 		status_code = cmd_status;
-		if (cmd_status == 0)
+		if (cmd_status == 0 || cmd_status == 127 || cmd_status == 126)
 			break;
 		/*if (sep == '|' && cmd_status == 0)*/
 			/*break;*/
