@@ -29,18 +29,3 @@ char *get_input(int fd)
 	/*last_input = line_buffer;*/
 	return (line_buffer);
 }
-
-/**
- * free_last_input - Frees the most recent line_buffer entered by the user.
- *
- * This function frees the memory allocated
- * for the most recent line_buffer string
- * entered by the user. It should be called
- * after the line_buffer string is no longer
- * needed.
- */
-void free_last_input(void)
-{
-	free(last_input);
-	last_input = NULL;
-}
