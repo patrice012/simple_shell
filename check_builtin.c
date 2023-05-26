@@ -22,9 +22,11 @@ int check_for_builtin(char **argv, char *line_buffer)
 	else if (_strcmp(argv[0], "unsetenv") == 0)
 		cmd_status = (_unsetenv(argv[1]) ? 2 : 0);
 	else if (_strcmp(argv[0], "cd") == 0)
-		cmd_status = change_dir(argv[1]);
+		cmd_status = change_directory(argv[1]);
 	else if (_strcmp(argv[0], "alias") == 0)
 		cmd_status = alias(argv);
+	else if (_strcmp(argv[0], "help") == 0)
+		cmd_status = _help();
 	else
 		return (1);
 	return (cmd_status);

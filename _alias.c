@@ -3,6 +3,31 @@
 void update_alias_env(char *new_alias, char *new_value, int update_env);
 char *setup_alias(char *alias, int len);
 
+
+
+/**
+ * alias - alias built in command to print and set aliases
+ *
+ * @tokens: a tokenized string of commands and arguments
+ *
+ * Return: 0 on sucess, 1 on fialure
+ */
+int alias(char **tokens)
+{
+	int i, status = 0;
+
+	if (tokens[1] == NULL)
+		return (print_alias(NULL));
+	for (i = 1; tokens[i] != NULL; i++)
+		if (_strchr(tokens[i], '=') == NULL)
+			status |= print_alias(tokens[i]);
+		else
+			status |= set_alias(tokens[i]);
+
+	return (0);
+}
+
+
 /**
  * print_alias - prints alias(es) from environ
  *
@@ -174,3 +199,4 @@ char *setup_alias(char *alias, int len)
 	_strcat(new_alias, "\'");
 	return (new_alias);
 }
+

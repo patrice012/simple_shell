@@ -45,18 +45,7 @@ int setup_env(void)
 	return (0);
 }
 
-/**
- * free_env - frees the memory that the environment copy
- *                                                takes.
- */
-void free_env(void)
-{
-	int i;
 
-	for (i = 0; environ[i] != NULL; i++)
-		free(environ[i]);
-	free(environ);
-}
 
 
 /**
@@ -89,7 +78,7 @@ char *_getenv(char *var)
 }
 
 /**
- * _setenv - sets an environmental variable,
+ * __setenv - sets an environmental variable,
  *			if exists, check if it is to be overwritten
  *			then overwrite it, otherwise dont overwrite.
  *			if doesn't exist, add it.
@@ -103,7 +92,7 @@ char *_getenv(char *var)
  * setenv must fail. if name is empty, setenv must fail.
  * if setenv fails, must print EINVAL from <errno.h>.
  */
-int _setenv(char *name, char *value)
+int __setenv(char *name, char *value)
 {
 	int env_len, name_len, val_len, i;
 	char *ev;
@@ -152,7 +141,7 @@ int _setenv(char *name, char *value)
 }
 
 /**
- * _unsetenv - unsets an environmental variable
+ * __unsetenv - unsets an environmental variable
  *
  * @name: name of variable to be unset.
  *
@@ -161,7 +150,7 @@ int _setenv(char *name, char *value)
  * note: the algorithm unsets by shifting all
  *		  successive entries back one element.
  */
-int _unsetenv(char *name)
+int __unsetenv(char *name)
 {
 	int len;
 	char **ep, **sp;

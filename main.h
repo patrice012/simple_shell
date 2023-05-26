@@ -32,8 +32,21 @@ void split_cmd(char *buffer, char *separator, char **cmd, char **rest);
 int exit_shell(char *line_buffer, char **argv);
 void _env(void);
 char *format_tilde(char *str);
-int change_dir(char *dir);
+int change_directory(char *dir);
 int alias(char **tokens);
+
+
+int _help(void);
+int _clear(void);
+
+
+/* command utils */
+void shell_prompt(void);
+void execute(char *line_buffer);
+int execute_system_cmd(char **argv, int n);
+int create_process(void);
+int check_for_builtin(char **argv, char *line_buffer);
+
 
 /* string functions */
 size_t _strlen(char *s);
@@ -52,6 +65,7 @@ int is_digit(char c);
 
 /* getline functions */
 int _getline(char **lineptr, size_t *n, int stream);
+ssize_t get_input(char **buffer, int fd);
 
 /* environment functions */
 int setup_env(void);
@@ -94,14 +108,12 @@ int _write_stderr(char *str);
 int _putchar(char c);
 
 
-/********************************** */
-ssize_t get_input(char **buffer, int fd);
-void shell_prompt(void);
-void execute(char *line_buffer);
-int execute_system_cmd(char **argv, int n);
-void sig_handler(int sig);
+/* helper functions */
+void free_double_pointer(char **ptr);
 
-int create_process(void);
-int check_for_builtin(char **argv, char *line_buffer);
+/* alias utils */
+int print_alias(char *name);
+int set_alias(char *new_value);
+
 
 #endif
