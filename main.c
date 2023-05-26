@@ -14,10 +14,10 @@ void sig_handler(int sig);
  *
  * @argc: argument count
  * @argv: argument list
- *
+ * @envp: environment variable list
  * Return: 0 on success
  */
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **envp UNUSED)
 {
 	size_t line_size = 0;
 	int fd = STDIN_FILENO;
@@ -25,12 +25,14 @@ int main(int argc, char **argv)
 
 	prog_name = argv[0];
 	signal(SIGINT, sig_handler);
-	if (argc > 1)
-	{
-		status_code = process_file(argv[1], &fd);
-		if (status_code)
-			return (status_code);
-	}
+	/*
+	 *if (argc > 1)
+	 *{
+	 *	status_code = process_file(argv[1], &fd);
+	 *	if (status_code)
+	 *		return (status_code);
+	 *}
+	 */
 
 	if (setup_env())
 		return (-1);
@@ -59,23 +61,6 @@ int main(int argc, char **argv)
 	return (status_code);
 }
 
-/**
- * shell_prompt - displays shell prompt to stdout
- */
-void shell_prompt(void)
-{
-	char cwd[PATH_MAX], *formatted_str;
-
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
-		perror("getcwd() error");
-
-	formatted_str = format_tilde(cwd);
-	if (formatted_str != NULL)
-		_strcpy(cwd, formatted_str);
-	print_str(cwd);
-	free(formatted_str);
-	print_str("$ ");
-}
 
 /**
  * run_cmd - checks whether a command is built-in or system command and
@@ -98,8 +83,8 @@ void run_cmd(char *line_buffer)
 		n = parse_cmd(cmd, argv);
 		if (n == 0)
 			break;
-		handle_variables(argv);
-		handle_aliases(argv);
+		/*handle_variables(argv);*/
+		/*handle_aliases(argv);*/
 
 		if (_strcmp(argv[0], "exit") == 0)
 			cmd_status = exit_shell(line_buffer, argv);

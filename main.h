@@ -87,4 +87,13 @@ void error_file(char *file);
 /* File processing */
 int process_file(char *file, int *fd);
 
+/* write utils */
+int _write_stdout(char *str);
+int _write_stderr(char *str);
+int _putchar(char c);
+
+
+/********************************** */
+char *get_input(void);
+
 #endif

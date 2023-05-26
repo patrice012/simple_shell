@@ -7,11 +7,7 @@
  */
 void print_str(char *s)
 {
-	int i;
-
-	i = _strlen(s);
-
-	write(STDOUT_FILENO, s, i);
+    _write_stdout(s);
 }
 
 /**
@@ -21,9 +17,16 @@ void print_str(char *s)
  */
 void print_err(char *s)
 {
-	int i;
+    _write_stderr(s);
+}
 
-	i = _strlen(s);
+/**
+ * _putchar - write a characeter to stdout
+ * @c: character to write
+ * Return: 1 for success and -1 for failure
+ */
 
-	write(STDERR_FILENO, s, i);
+int _putchar(char c)
+{
+    return (write(1, &c, sizeof(c)));
 }
