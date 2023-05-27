@@ -102,7 +102,6 @@ int execute_system_cmd(char **argv, int n)
 	}
 	else if (child_pid > 0)
 		wait(&child_status);
-
 	free(prog_path);
 	return (child_status / 256);
 }
